@@ -53,13 +53,13 @@ export default (options) => {
                 player.infoPanel.triggle();
             },
         },
+        // {
+        //     text: 'About author',
+        //     link: 'https://diygod.me',
+        // },
         {
-            text: 'About author',
-            link: 'https://diygod.me',
-        },
-        {
-            text: `DPlayer v${DPLAYER_VERSION}`,
-            link: 'https://github.com/MoePlayer/DPlayer',
+            text: `CBPlayer v${DPLAYER_VERSION}`,
+            link: 'https://github.com/cdnbye/CBPlayer',
         },
     ]);
 

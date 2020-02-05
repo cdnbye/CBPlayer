@@ -251,6 +251,26 @@
         <span class="dplayer-info-panel-item-data"></span>
     </div>
     {{ /if }}
+    <div class="dplayer-info-panel-item dplayer-info-panel-item-p2p-version">
+        <span class="dplayer-info-panel-item-title">P2P Version</span>
+        <span class="dplayer-info-panel-item-data"></span>
+    </div>
+    <div class="dplayer-info-panel-item dplayer-info-panel-item-p2p-downloaded">
+        <span class="dplayer-info-panel-item-title">P2P Downloaded</span>
+        <span class="dplayer-info-panel-item-data"></span>
+    </div>
+    <div class="dplayer-info-panel-item dplayer-info-panel-item-p2p-uploaded">
+        <span class="dplayer-info-panel-item-title">P2P Uploaded</span>
+        <span class="dplayer-info-panel-item-data"></span>
+    </div>
+    <div class="dplayer-info-panel-item dplayer-info-panel-item-peerid">
+        <span class="dplayer-info-panel-item-title">Peer Id</span>
+        <span class="dplayer-info-panel-item-data"></span>
+    </div>
+    <div class="dplayer-info-panel-item dplayer-info-panel-item-peers">
+        <span class="dplayer-info-panel-item-title">Peers Connected</span>
+        <span class="dplayer-info-panel-item-data"></span>
+    </div>
 </div>
 <div class="dplayer-menu">
     {{ each options.contextmenu }}

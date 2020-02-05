@@ -20,6 +20,7 @@ import HotKey from './hotkey';
 import ContextMenu from './contextmenu';
 import InfoPanel from './info-panel';
 import tplVideo from '../template/video.art';
+import PlayState from './play-state';
 
 let index = 0;
 const instances = [];
@@ -138,13 +139,22 @@ class DPlayer {
 
         this.contextmenu = new ContextMenu(this);
 
+        // P2P
+        this.p2pInfo = {
+            version: '',
+            downloaded: 0, // 单位KB
+            uploaded: 0, // 单位KB
+            peerId: '',
+            peers: 0,
+        };
+
         this.initVideo(this.video, (this.quality && this.quality.type) || this.options.video.type);
 
         this.infoPanel = new InfoPanel(this);
 
-        if (!this.danmaku && this.options.autoplay) {
-            this.play();
-        }
+        // if (!this.danmaku && this.options.autoplay) {
+        //     this.play();
+        // }
 
         index++;
         instances.push(this);
@@ -313,7 +323,7 @@ class DPlayer {
         }
     }
 
-    initMSE(video, type) {
+    initMSE(video, type, callback) {
         this.type = type;
         if (this.options.video.customType && this.options.video.customType[type]) {
             if (Object.prototype.toString.call(this.options.video.customType[type]) === '[object Function]') {
@@ -334,7 +344,8 @@ class DPlayer {
                 }
             }
 
-            if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))) {
+            // 百度和UC浏览器目前不兼容P2P
+            if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL')) && utils.isP2pNotSupported) {
                 this.type = 'normal';
             }
 
@@ -342,21 +353,13 @@ class DPlayer {
                 // https://github.com/video-dev/hls.js
                 case 'hls':
                     if (window.Hls) {
-                        if (window.Hls.isSupported()) {
-                            const options = this.options.pluginOptions.hls;
-                            const hls = new window.Hls(options);
-                            this.plugins.hls = hls;
-                            hls.loadSource(video.src);
-                            hls.attachMedia(video);
-                            this.events.on('destroy', () => {
-                                hls.destroy();
-                                delete this.plugins.hls;
-                            });
-                        } else {
-                            this.notice('Error: Hls is not supported.');
-                        }
+                        this.initHls(video);
+                        callback();
                     } else {
-                        this.notice("Error: Can't find Hls.");
+                        requestScript('https://cdn.jsdelivr.net/npm/cdnbye@latest', () => {
+                            this.initHls(video);
+                            callback();
+                        });
                     }
                     break;
 
@@ -384,6 +387,7 @@ class DPlayer {
                     } else {
                         this.notice("Error: Can't find flvjs.");
                     }
+                    callback();
                     break;
 
                 // https://github.com/Dash-Industry-Forum/dash.js
@@ -403,6 +407,7 @@ class DPlayer {
                     } else {
                         this.notice("Error: Can't find dashjs.");
                     }
+                    callback();
                     break;
 
                 // https://github.com/webtorrent/webtorrent
@@ -434,13 +439,30 @@ class DPlayer {
                     } else {
                         this.notice("Error: Can't find Webtorrent.");
                     }
+                    callback();
                     break;
             }
         }
     }
 
     initVideo(video, type) {
-        this.initMSE(video, type);
+        this.initMSE(video, type, () => {
+            if (!this.danmaku && this.options.autoplay) {
+                this.play();
+            }
+
+            // 记忆播放 使用前先判空
+            if (!this.options.live) {
+                this.playState = new PlayState(this.video, this.options.video.url);
+                // console.warn(`this.playState.getLastState() ${this.playState.getLastState()}`)
+                const lastTime = this.playState.getLastState();
+                if (lastTime) {
+                    this.seek(lastTime - 1);
+                }
+
+                this.playState.startRecord();
+            }
+        });
 
         /**
          * video events
@@ -602,6 +624,9 @@ class DPlayer {
         this.pause();
         this.controller.destroy();
         this.timer.destroy();
+        if (this.playState) {
+            this.playState.destroy();
+        }
         this.video.src = '';
         this.container.innerHTML = '';
         this.events.trigger('destroy');
@@ -611,6 +636,58 @@ class DPlayer {
         /* global DPLAYER_VERSION */
         return DPLAYER_VERSION;
     }
+
+    initHls(video) {
+        if (window.Hls.isSupported()) {
+            const options = this.options.pluginOptions.hls;
+            const hls = new window.Hls(options);
+            this.plugins.hls = hls;
+            hls.loadSource(video.src);
+            hls.attachMedia(video);
+            this.setupP2PListeners(hls);
+            this.events.on('destroy', () => {
+                hls.destroy();
+                delete this.plugins.hls;
+            });
+        } else {
+            this.notice('Error: Hls is not supported.');
+        }
+    }
+
+    // P2P
+    setupP2PListeners(hlsjs) {
+        this.p2pInfo.version = hlsjs.p2pEngine.version;
+        hlsjs.p2pEngine
+            .on('stats', (stats) => {
+                this.p2pInfo.downloaded = stats.totalP2PDownloaded;
+                this.p2pInfo.uploaded = stats.totalP2PUploaded;
+                this.events.trigger('stats', stats);
+            })
+            .on('peerId', (peerId) => {
+                this.p2pInfo.peerId = peerId;
+                this.events.trigger('peerId', peerId);
+            })
+            .on('peers', (peers) => {
+                this.p2pInfo.peers = peers.length;
+                this.events.trigger('peers', peers);
+            });
+    }
+}
+
+function requestScript(url, callback) {
+    // Adding the script tag to the head
+    const head = document.getElementsByTagName('head')[0];
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
 }
 
 export default DPlayer;

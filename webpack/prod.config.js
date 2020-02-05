@@ -13,7 +13,7 @@ module.exports = {
     devtool: 'source-map',
 
     entry: {
-        DPlayer: './src/js/index.js',
+        CBPlayer: './src/js/index.js',
     },
 
     output: {

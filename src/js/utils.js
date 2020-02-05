@@ -1,5 +1,7 @@
 const isMobile = /mobile/i.test(window.navigator.userAgent);
 
+const isP2pNotSupported = /iPad|iPhone|iPod|Baidu|UCBrowser/i.test(window.navigator.userAgent);
+
 const utils = {
     /**
      * Parse second to time string
@@ -88,6 +90,7 @@ const utils = {
     },
 
     isMobile: isMobile,
+    isP2pNotSupported: isP2pNotSupported,
 
     isFirefox: /firefox/i.test(window.navigator.userAgent),
 

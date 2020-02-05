@@ -93,6 +93,12 @@ class Template {
         this.infoDanmakuId = this.container.querySelector('.dplayer-info-panel-item-danmaku-id .dplayer-info-panel-item-data');
         this.infoDanmakuApi = this.container.querySelector('.dplayer-info-panel-item-danmaku-api .dplayer-info-panel-item-data');
         this.infoDanmakuAmount = this.container.querySelector('.dplayer-info-panel-item-danmaku-amount .dplayer-info-panel-item-data');
+        // P2P Info
+        this.infoP2pVersion = this.container.querySelector('.dplayer-info-panel-item-p2p-version .dplayer-info-panel-item-data');
+        this.infoP2pDownloaded = this.container.querySelector('.dplayer-info-panel-item-p2p-downloaded .dplayer-info-panel-item-data');
+        this.infoP2pUploaded = this.container.querySelector('.dplayer-info-panel-item-p2p-uploaded .dplayer-info-panel-item-data');
+        this.infoPeers = this.container.querySelector('.dplayer-info-panel-item-peers .dplayer-info-panel-item-data');
+        this.infoPeerid = this.container.querySelector('.dplayer-info-panel-item-peerid .dplayer-info-panel-item-data');
     }
 }
 

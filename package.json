@@ -1,8 +1,8 @@
 {
-    "name": "dplayer",
-    "version": "1.25.0",
-    "description": "Wow, such a lovely HTML5 danmaku video player",
-    "main": "dist/DPlayer.min.js",
+    "name": "cbplayer",
+    "version": "0.3.0",
+    "description": "CDNBye official web player",
+    "main": "dist/CBPlayer.min.js",
     "scripts": {
         "start": "npm run dev",
         "build": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js --progress --display-error-details --colors",
@@ -12,16 +12,23 @@
         "format:staged": "eslint \"**/*.js\" --fix && pretty-quick --staged --verbose --pattern \"**/*.{js,json,md}\"",
         "format:check": "eslint \"**/*.js\" && prettier-check \"**/*.{js,json,md}\"",
         "docs:dev": "vuepress dev docs",
-        "docs:build": "vuepress build docs"
+        "docs:build": "vuepress build docs",
+        "publish": "npm publish",
+        "git-push": "git add . && git commit -m 'update readme' && git push"
     },
     "files": [
         "dist"
     ],
     "repository": {
-        "url": "git+https://github.com/DIYgod/DPlayer.git",
+        "url": "git+https://github.com/cdnbye/CBPlayer.git",
         "type": "git"
     },
     "keywords": [
+        "p2p",
+        "webrtc",
+        "cdnbye",
+        "m3u8",
+        "hls",
         "player",
         "danmaku",
         "video",
@@ -33,9 +40,9 @@
     "author": "DIYgod",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/DIYgod/DPlayer/issues"
+        "url": "https://github.com/cdnbye/CBPlayer/issues"
     },
-    "homepage": "https://github.com/DIYgod/DPlayer#readme",
+    "homepage": "https://docs.cdnbye.com/#/",
     "devDependencies": {
         "@babel/core": "^7.6.0",
         "@babel/preset-env": "^7.4.5",
