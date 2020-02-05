@@ -1,6 +1,6 @@
 {
     "name": "cbplayer",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "CDNBye official web player",
     "main": "dist/CBPlayer.min.js",
     "scripts": {
@@ -34,10 +34,7 @@
         "video",
         "html5"
     ],
-    "gitHooks": {
-        "pre-commit": "npm run format:staged"
-    },
-    "author": "DIYgod",
+    "author": "cdnbye",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/cdnbye/CBPlayer/issues"

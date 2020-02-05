@@ -23,7 +23,7 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 ## 集成方法
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/p2p-dplayer@latest/dist/DPlayer.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cbplayer@latest/dist/CBPlayer.min.css" />
 <div id="cbplayer"></div>
 <script src="https://cdn.jsdelivr.net/npm/cbplayer@latest"></script>
 <script>
