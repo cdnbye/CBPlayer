@@ -22,6 +22,7 @@ import InfoPanel from './info-panel';
 import tplVideo from '../template/video.art';
 import PlayState from './play-state';
 import Hls from 'cdnbye';
+// import Hls from 'hls.js';
 
 let index = 0;
 const instances = [];
@@ -671,20 +672,20 @@ class DPlayer {
     }
 }
 
-function requestScript(url, callback) {
-    // Adding the script tag to the head
-    const head = document.getElementsByTagName('head')[0];
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-
-    // Then bind the event to the callback function.
-    // There are several events for cross browser compatibility.
-    script.onreadystatechange = callback;
-    script.onload = callback;
-
-    // Fire the loading
-    head.appendChild(script);
-}
+// function requestScript(url, callback) {
+//     // Adding the script tag to the head
+//     const head = document.getElementsByTagName('head')[0];
+//     const script = document.createElement('script');
+//     script.type = 'text/javascript';
+//     script.src = url;
+//
+//     // Then bind the event to the callback function.
+//     // There are several events for cross browser compatibility.
+//     script.onreadystatechange = callback;
+//     script.onload = callback;
+//
+//     // Fire the loading
+//     head.appendChild(script);
+// }
 
 export default DPlayer;
