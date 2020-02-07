@@ -1,8 +1,16 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cbplayer@latest/dist/CBPlayer.min.css">
+<style type="text/css">
+    body,html{width:100%;height:100%;background:#000;padding:0;margin:0;overflow-x:hidden;overflow-y:hidden}
+    *{margin:0;border:0;padding:0;text-decoration:none}
+    #stats{position:fixed;top:5px;left:10px;font-size:12px;color:#fdfdfd;z-index:2147483647;text-shadow:1px 1px 1px #000, 1px 1px 1px #000}
+    #dplayer{position:inherit}
+</style>
 <div id="cbplayer"></div>
+<div id="stats"></div>
 <script src="https://cdn.jsdelivr.net/npm/cbplayer@latest"></script>
 <script>
+    var _peerId = '', _peerNum = 0, _totalP2PDownloaded = 0, _totalP2PUploaded = 0;
     var player = new CBPlayer({
         container: document.getElementById('cbplayer'),
         autoplay: true,
@@ -23,4 +31,23 @@
             }
         },
     });
+
+    player.on('stats', function (stats) {
+        _totalP2PDownloaded = stats.totalP2PDownloaded;
+        _totalP2PUploaded = stats.totalP2PUploaded;
+        updateStats();
+    })
+    player.on('peerId', function (peerId) {
+        _peerId = peerId;
+    })
+    player.on('peers', function (peers) {
+        _peerNum = peers.length;
+        updateStats();
+    });
+
+    function updateStats() {
+        var text = 'CDNBye P2P正在为您加速' + (_totalP2PDownloaded/1024).toFixed(2)
+            + 'MB 已分享' + (_totalP2PUploaded/1024).toFixed(2) + 'MB' + ' 连接节点' + _peerNum + '个';
+        document.getElementById('stats').innerText = text
+    }
 </script>

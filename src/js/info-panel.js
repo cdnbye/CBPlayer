@@ -35,7 +35,7 @@ class InfoPanel {
     }
 
     update() {
-        this.template.infoVersion.innerHTML = `v${DPLAYER_VERSION} ${GIT_HASH}`;
+        this.template.infoVersion.innerHTML = `v${DPLAYER_VERSION}`;
         this.template.infoType.innerHTML = this.player.type;
         this.template.infoUrl.innerHTML = this.player.options.video.url;
         this.template.infoResolution.innerHTML = `${this.player.video.videoWidth} x ${this.player.video.videoHeight}`;
@@ -46,7 +46,7 @@ class InfoPanel {
             this.template.infoDanmakuAmount.innerHTML = this.player.danmaku.dan.length;
         }
         // P2P Info
-        this.template.infoP2pVersion.innerHTML = this.player.plugins.hls ? `${this.player.p2pInfo.version}` : '';
+        this.template.infoP2pVersion.innerHTML = this.player.plugins.hls ? `v${this.player.p2pInfo.version}` : '';
         this.template.infoP2pDownloaded.innerHTML = `${(this.player.p2pInfo.downloaded / 1024).toFixed(2)}MB`;
         this.template.infoP2pUploaded.innerHTML = `${(this.player.p2pInfo.uploaded / 1024).toFixed(2)}MB`;
         this.template.infoPeerid.innerHTML = `${this.player.p2pInfo.peerId}`;

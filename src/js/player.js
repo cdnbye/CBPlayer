@@ -21,6 +21,7 @@ import ContextMenu from './contextmenu';
 import InfoPanel from './info-panel';
 import tplVideo from '../template/video.art';
 import PlayState from './play-state';
+import Hls from 'cdnbye';
 
 let index = 0;
 const instances = [];
@@ -152,9 +153,21 @@ class DPlayer {
 
         this.infoPanel = new InfoPanel(this);
 
-        // if (!this.danmaku && this.options.autoplay) {
-        //     this.play();
-        // }
+        if (!this.danmaku && this.options.autoplay) {
+            this.play();
+        }
+
+        // 记忆播放 使用前先判空
+        if (!this.options.live) {
+            this.playState = new PlayState(this.video, this.options.video.url);
+            // console.warn(`this.playState.getLastState() ${this.playState.getLastState()}`)
+            const lastTime = this.playState.getLastState();
+            if (lastTime) {
+                this.seek(lastTime - 1);
+            }
+
+            this.playState.startRecord();
+        }
 
         index++;
         instances.push(this);
@@ -323,7 +336,7 @@ class DPlayer {
         }
     }
 
-    initMSE(video, type, callback) {
+    initMSE(video, type) {
         this.type = type;
         if (this.options.video.customType && this.options.video.customType[type]) {
             if (Object.prototype.toString.call(this.options.video.customType[type]) === '[object Function]') {
@@ -352,15 +365,16 @@ class DPlayer {
             switch (this.type) {
                 // https://github.com/video-dev/hls.js
                 case 'hls':
-                    if (window.Hls) {
-                        this.initHls(video);
-                        callback();
-                    } else {
-                        requestScript('https://cdn.jsdelivr.net/npm/cdnbye@latest', () => {
-                            this.initHls(video);
-                            callback();
-                        });
-                    }
+                    // if (window.Hls) {
+                    //     this.initHls(video);
+                    //     callback();
+                    // } else {
+                    //     requestScript('https://cdn.jsdelivr.net/npm/cdnbye@latest', () => {
+                    //         this.initHls(video);
+                    //         callback();
+                    //     });
+                    // }
+                    this.initHls(video);
                     break;
 
                 // https://github.com/Bilibili/flv.js
@@ -387,7 +401,6 @@ class DPlayer {
                     } else {
                         this.notice("Error: Can't find flvjs.");
                     }
-                    callback();
                     break;
 
                 // https://github.com/Dash-Industry-Forum/dash.js
@@ -407,7 +420,6 @@ class DPlayer {
                     } else {
                         this.notice("Error: Can't find dashjs.");
                     }
-                    callback();
                     break;
 
                 // https://github.com/webtorrent/webtorrent
@@ -439,30 +451,13 @@ class DPlayer {
                     } else {
                         this.notice("Error: Can't find Webtorrent.");
                     }
-                    callback();
                     break;
             }
         }
     }
 
     initVideo(video, type) {
-        this.initMSE(video, type, () => {
-            if (!this.danmaku && this.options.autoplay) {
-                this.play();
-            }
-
-            // 记忆播放 使用前先判空
-            if (!this.options.live) {
-                this.playState = new PlayState(this.video, this.options.video.url);
-                // console.warn(`this.playState.getLastState() ${this.playState.getLastState()}`)
-                const lastTime = this.playState.getLastState();
-                if (lastTime) {
-                    this.seek(lastTime - 1);
-                }
-
-                this.playState.startRecord();
-            }
-        });
+        this.initMSE(video, type);
 
         /**
          * video events
@@ -638,9 +633,11 @@ class DPlayer {
     }
 
     initHls(video) {
-        if (window.Hls.isSupported()) {
+        if (Hls.isSupported()) {
             const options = this.options.pluginOptions.hls;
-            const hls = new window.Hls(options);
+            // options.debug = false;
+            options.enableWorker = false;
+            const hls = new Hls(options);
             this.plugins.hls = hls;
             hls.loadSource(video.src);
             hls.attachMedia(video);
