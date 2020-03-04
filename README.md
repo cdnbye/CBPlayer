@@ -33,6 +33,55 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
         video: {
             url: 'http://cn1.kankia.com/hls/20191220/596ff11e1db2c3969da01367fc41d3b0/1576776716/index.m3u8',
         },
+        pluginOptions: {
+            hls: {
+                p2pConfig: {
+                    live: false,
+                    // Other p2pConfig options provided by CDNBye
+                    // https://docs.cdnbye.com/#/API
+                }
+            }
+        },
     });
 </script>
+```
+
+## 完整php版调用代码
+调用方式：http://example.com?url=
+```php
+<html>
+<head>
+    <title>dplayer增加记忆+P2P播放</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cbplayer@latest/dist/CBPlayer.min.css" />
+    <style type="text/css">
+        body,html{width:100%;height:100%;background:#000;padding:0;margin:0;overflow-x:hidden;overflow-y:hidden}
+        *{margin:0;border:0;padding:0;text-decoration:none}
+        #video{position:inherit}
+    </style>
+</head>
+<body style="background:#000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" oncontextmenu=window.event.returnValue=false>
+<div id="video"></div>
+<script src="https://cdn.jsdelivr.net/npm/cbplayer@latest"></script>
+<script>
+    var url = '<?php echo($_REQUEST['url']);?>';
+    var dp = new CBPlayer({
+        container: document.getElementById('video'),
+        autoplay: true,
+        hotkey: true,  // 移动端全屏时向右划动快进，向左划动快退。
+        video: {
+            url:url,
+            // pic: 'loading_wap.gif',
+        },
+    });
+    dp.on('fullscreen', function () {
+        if (/Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            screen.orientation.lock('landscape');
+        }
+    });
+</script>
+</body>
+</html>
 ```

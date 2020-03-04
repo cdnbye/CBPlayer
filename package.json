@@ -1,6 +1,6 @@
 {
   "name": "cbplayer",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "CDNBye official web player",
   "main": "dist/CBPlayer.min.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "publish": "npm publish",
-    "git-push": "git add . && git commit -m 'update readme' && git push"
+    "git-push": "git add . && git commit -m 'update demo' && git push"
   },
   "files": [
     "dist"
