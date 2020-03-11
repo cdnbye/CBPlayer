@@ -57,10 +57,10 @@ export default (options) => {
         //     text: 'About author',
         //     link: 'https://diygod.me',
         // },
-        {
-            text: `CBPlayer v${DPLAYER_VERSION}`,
-            link: 'https://github.com/cdnbye/CBPlayer',
-        },
+        // {
+        //     text: `CBPlayer v${DPLAYER_VERSION}`,
+        //     link: 'https://github.com/cdnbye/CBPlayer',
+        // },
     ]);
 
     return options;

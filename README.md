@@ -5,13 +5,13 @@
 
 > 🍭 Wow, such a lovely HTML5 danmaku video player
 
-[![npm](https://img.shields.io/npm/v/cbplayer.svg?style=flat-square)](https://www.npmjs.com/package/dplayer)
+[![npm](https://img.shields.io/npm/v/cbplayer.svg?style=flat-square)](https://www.npmjs.com/package/cbplayer)
 [![npm](https://img.shields.io/npm/l/cbplayer.svg?style=flat-square)](https://github.com/MoePlayer/DPlayer/blob/master/LICENSE)
-[![npm](https://img.shields.io/npm/dt/cbplayer.svg?style=flat-square)](https://www.npmjs.com/package/dplayer)
+[![npm](https://img.shields.io/npm/dt/cbplayer.svg?style=flat-square)](https://www.npmjs.com/package/cbplayer)
 
 ## Introduction
 
-CBPlayer 是基于 DPlayer 开发的，内置 CDNBye P2P 插件的 H5 播放器，加入了记忆播放等实用功能。
+CBPlayer 是基于 DPlayer 开发的，内置 CDNBye P2P 插件的 H5 播放器，加入了记忆播放等实用功能，右键可以查看p2p实时数据。
 
 <br>
 CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
