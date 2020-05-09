@@ -8,6 +8,7 @@
 [![npm](https://img.shields.io/npm/v/cbplayer.svg?style=flat-square)](https://www.npmjs.com/package/cbplayer)
 [![npm](https://img.shields.io/npm/l/cbplayer.svg?style=flat-square)](https://github.com/MoePlayer/DPlayer/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/dt/cbplayer.svg?style=flat-square)](https://www.npmjs.com/package/cbplayer)
+[![npm](https://data.jsdelivr.com/v1/package/npm/cbplayer/badge)](https://www.jsdelivr.com/package/npm/cbplayer)
 
 ## Introduction
 
