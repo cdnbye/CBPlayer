@@ -1,6 +1,6 @@
 {
   "name": "cbplayer",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "CDNBye official web player",
   "main": "dist/CBPlayer.min.js",
   "scripts": {
@@ -81,7 +81,7 @@
   "dependencies": {
     "axios": "0.19.2",
     "balloon-css": "^1.0.3",
-    "cdnbye": "^1.3.0",
+    "cdnbye": "^1.4.0",
     "hls.js": "^0.13.2",
     "promise-polyfill": "8.1.3"
   }

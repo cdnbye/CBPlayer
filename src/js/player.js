@@ -359,7 +359,8 @@ class DPlayer {
             }
 
             // 百度和UC浏览器目前不兼容P2P
-            if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL')) && utils.isP2pNotSupported) {
+            if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
+                && (utils.isP2pNotSupported || !Hls.isSupported())) {
                 this.type = 'normal';
             }
 
