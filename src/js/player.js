@@ -21,8 +21,9 @@ import ContextMenu from './contextmenu';
 import InfoPanel from './info-panel';
 import tplVideo from '../template/video.art';
 import PlayState from './play-state';
-import Hls from 'cdnbye';
-// import Hls from 'hls.js';
+// import Hls from 'cdnbye';
+import P2PEngine from 'cdnbye/dist/hlsjs-p2p-engine.min';
+import Hls from 'hls.js';
 
 let index = 0;
 const instances = [];
@@ -636,10 +637,19 @@ class DPlayer {
 
     initHls(video) {
         if (Hls.isSupported()) {
+            // console.warn(Hls.version);
             const options = this.options.pluginOptions.hls;
-            // options.debug = false;
+            const p2pConfig = options.p2pConfig;
+            // p2pConfig.logLevel = true
+            delete options.p2pConfig;
+            // options.debug = true;
             options.enableWorker = false;
             const hls = new Hls(options);
+
+            if (P2PEngine.isSupported()) {
+                hls.p2pEngine = new P2PEngine(hls, p2pConfig);        // Key step
+            }
+
             this.plugins.hls = hls;
             hls.loadSource(video.src);
             hls.attachMedia(video);

@@ -36,6 +36,9 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
+                // exclude: [
+                //     path.resolve(__dirname, 'node_modules')
+                // ],
                 use: [
                     'template-string-optimize-loader',
                     {
