@@ -22,8 +22,8 @@ import InfoPanel from './info-panel';
 import tplVideo from '../template/video.art';
 import PlayState from './play-state';
 // import Hls from 'cdnbye';
-import P2PEngine from 'cdnbye/dist/hlsjs-p2p-engine.min';
-import Hls from 'hls.js';
+// import P2PEngine from 'cdnbye/dist/hlsjs-p2p-engine.min';
+// import Hls from 'hls.js';
 
 let index = 0;
 const instances = [];
@@ -354,6 +354,8 @@ class DPlayer {
                     this.type = 'flv';
                 } else if (/.mpd(#|\?|$)/i.exec(video.src)) {
                     this.type = 'dash';
+                } else if (/.mp4(#|\?|$)/i.exec(video.src)) {
+                    this.type = 'mp4';
                 } else {
                     this.type = 'normal';
                 }
@@ -361,23 +363,18 @@ class DPlayer {
 
             // 百度和UC浏览器目前不兼容P2P
             if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
-                && (utils.isP2pNotSupported || !Hls.isSupported())) {
+                && (utils.isP2pNotSupported || !window.Hls.isSupported())) {
                 this.type = 'normal';
             }
 
             switch (this.type) {
                 // https://github.com/video-dev/hls.js
                 case 'hls':
-                    // if (window.Hls) {
-                    //     this.initHls(video);
-                    //     callback();
-                    // } else {
-                    //     requestScript('https://cdn.jsdelivr.net/npm/cdnbye@latest', () => {
-                    //         this.initHls(video);
-                    //         callback();
-                    //     });
-                    // }
-                    this.initHls(video);
+                    if (window.Hls) {
+                        this.initHlsjs(video);
+                    } else {
+                        this.notice("Error: Can't find hls.js.");
+                    }
                     break;
 
                 // https://github.com/Bilibili/flv.js
@@ -409,19 +406,17 @@ class DPlayer {
                 // https://github.com/Dash-Industry-Forum/dash.js
                 case 'dash':
                     if (window.dashjs) {
-                        const dashjsPlayer = window.dashjs
-                            .MediaPlayer()
-                            .create()
-                            .initialize(video, video.src, false);
-                        const options = this.options.pluginOptions.dash;
-                        dashjsPlayer.updateSettings(options);
-                        this.plugins.dash = dashjsPlayer;
-                        this.events.on('destroy', () => {
-                            window.dashjs.MediaPlayer().reset();
-                            delete this.plugins.dash;
-                        });
+                        this.initDashjs(video);
                     } else {
                         this.notice("Error: Can't find dashjs.");
+                    }
+                    break;
+
+                case 'mp4':
+                    if (window.P2PEngineMp4) {
+                        this.initMp4(video);
+                    } else {
+                        this.notice("Error: Can't find P2PEngineMp4.");
                     }
                     break;
 
@@ -635,25 +630,26 @@ class DPlayer {
         return DPLAYER_VERSION;
     }
 
-    initHls(video) {
-        if (Hls.isSupported()) {
+    initHlsjs(video) {
+        if (window.Hls.isSupported()) {
             // console.warn(Hls.version);
-            const options = this.options.pluginOptions.hls;
+            const options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig;
             // p2pConfig.logLevel = true
             delete options.p2pConfig;
             // options.debug = true;
             options.enableWorker = false;
-            const hls = new Hls(options);
+            const hls = new window.Hls(options);
 
-            if (P2PEngine.isSupported()) {
-                hls.p2pEngine = new P2PEngine(hls, p2pConfig);        // Key step
+            if (window.P2PEngine && window.P2PEngine.isSupported()) {
+                hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
+                this.p2pInfo.version = hls.p2pEngine.version;
             }
 
             this.plugins.hls = hls;
             hls.loadSource(video.src);
             hls.attachMedia(video);
-            this.setupP2PListeners(hls);
+            this.setupP2PListeners(hls.p2pEngine);
             this.events.on('destroy', () => {
                 hls.destroy();
                 delete this.plugins.hls;
@@ -663,11 +659,39 @@ class DPlayer {
         }
     }
 
+    initDashjs(video) {
+        const options = this.options.pluginOptions.dash || {};
+        const p2pConfig = options.p2pConfig;
+        delete options.p2pConfig;
+        const mediaPlayer = window.dashjs.MediaPlayer().create();
+        if (window.P2PEngineDash && window.P2PEngineDash.isSupported()) {
+            const engine = new window.P2PEngineDash(mediaPlayer, p2pConfig);
+            mediaPlayer.p2pEngine = engine;
+            this.p2pInfo.version = engine.version;
+        }
+        mediaPlayer.initialize(video, video.src, this.options.autoplay);
+        mediaPlayer.updateSettings(options);
+        this.plugins.dash = mediaPlayer;
+        this.events.on('destroy', () => {
+            window.dashjs.MediaPlayer().reset();
+            delete this.plugins.dash;
+        });
+        this.setupP2PListeners(mediaPlayer.p2pEngine);
+    }
+
+    initMp4(video) {
+        const options = this.options.pluginOptions.mp4 || {};
+        var engine = new P2PEngineMp4(video, options);
+        engine.loadSource(video.src);
+        this.p2pInfo.version = P2PEngineMp4.version;
+        this.setupP2PListeners(engine);
+    }
+
     // P2P
-    setupP2PListeners(hlsjs) {
-        if (hlsjs.p2pEngine) {
-            this.p2pInfo.version = hlsjs.p2pEngine.version;
-            hlsjs.p2pEngine
+    setupP2PListeners(engine) {
+        if (engine) {
+            // console.warn(engine.version);
+            engine
                 .on('stats', (stats) => {
                     this.p2pInfo.downloaded = stats.totalP2PDownloaded;
                     this.p2pInfo.uploaded = stats.totalP2PUploaded;

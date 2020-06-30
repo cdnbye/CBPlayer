@@ -7,7 +7,12 @@ const cssnano = require('cssnano');
 
 module.exports = {
     mode: 'production',
-
+    externals: {
+        Hls: 'Hls',
+        P2PEngine: 'cdnbye',
+        P2PEngineMp4: 'cdnbye-mp4',
+        P2PEngineDash: 'cdnbye-dash',
+    },
     bail: true,
 
     devtool: 'source-map',

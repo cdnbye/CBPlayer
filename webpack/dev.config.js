@@ -7,7 +7,11 @@ const cssnano = require('cssnano');
 
 module.exports = {
     mode: 'development',
-
+    externals: {
+        Hls: 'Hls',
+        P2PEngineMp4: 'P2PEngineMp4',
+        P2PEngineDash: 'P2PEngineDash',
+    },
     devtool: 'cheap-module-source-map',
 
     entry: {
