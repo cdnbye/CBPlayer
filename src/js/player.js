@@ -367,6 +367,14 @@ class DPlayer {
                 this.type = 'normal';
             }
 
+            if (this.type === 'dash' && utils.isP2pNotSupported) {
+                this.type = 'normal';
+            }
+
+            if (this.type === 'mp4' && utils.isP2pNotSupported) {
+                this.type = 'normal';
+            }
+
             switch (this.type) {
                 // https://github.com/video-dev/hls.js
                 case 'hls':
@@ -632,7 +640,6 @@ class DPlayer {
 
     initHlsjs(video) {
         if (window.Hls.isSupported()) {
-            // console.warn(Hls.version);
             const options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig;
             // p2pConfig.logLevel = true
@@ -690,7 +697,6 @@ class DPlayer {
     // P2P
     setupP2PListeners(engine) {
         if (engine) {
-            // console.warn(engine.version);
             engine
                 .on('stats', (stats) => {
                     this.p2pInfo.downloaded = stats.totalP2PDownloaded;
