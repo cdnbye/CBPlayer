@@ -1,6 +1,8 @@
 const isMobile = /mobile/i.test(window.navigator.userAgent);
 
-const isP2pNotSupported = /iPad|iPhone|iPod|Baidu|UCBrowser/i.test(window.navigator.userAgent);
+const isQQBrowser = /MQQBrowser/i.test(navigator.userAgent) && !/\sQQ/i.test(navigator.userAgent);
+
+const isP2pNotSupported = /iPad|iPhone|iPod|Baidu|UCBrowser/i.test(window.navigator.userAgent) || isQQBrowser;
 
 const utils = {
     /**

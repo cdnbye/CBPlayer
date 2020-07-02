@@ -365,14 +365,17 @@ class DPlayer {
             if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
                 && (utils.isP2pNotSupported || !window.Hls.isSupported())) {
                 this.type = 'normal';
+                this.notice("Warn: Plat hls natively");
             }
 
             if (this.type === 'dash' && utils.isP2pNotSupported) {
                 this.type = 'normal';
+                this.notice("Warn: Plat dash natively");
             }
 
             if (this.type === 'mp4' && utils.isP2pNotSupported) {
                 this.type = 'normal';
+                this.notice("Warn: Plat mp4 natively");
             }
 
             switch (this.type) {
@@ -645,7 +648,7 @@ class DPlayer {
             // p2pConfig.logLevel = true
             delete options.p2pConfig;
             // options.debug = true;
-            options.enableWorker = false;
+            // options.enableWorker = false;
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
@@ -662,7 +665,7 @@ class DPlayer {
                 delete this.plugins.hls;
             });
         } else {
-            this.notice('Error: Hls is not supported.');
+            this.notice('Error: hls.js is not supported.');
         }
     }
 
