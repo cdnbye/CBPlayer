@@ -646,6 +646,7 @@ class DPlayer {
             const options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig;
             // p2pConfig.logLevel = true
+            p2pConfig.live = this.options.live;
             delete options.p2pConfig;
             // options.debug = true;
             // options.enableWorker = false;
