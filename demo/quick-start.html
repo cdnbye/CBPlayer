@@ -19,11 +19,13 @@
         autoplay: true,
         live: true,
         video: {
-            // url: 'example.m3u8',
+            url: 'example.m3u8',
         },
         pluginOptions: {
             hls: {
-                debug: false,
+                maxBufferSize: 0,
+                maxBufferLength: 10,
+                liveSyncDurationCount: 15,
                 p2pConfig: {
                     // logLevel: true,
                     // live: true,

@@ -643,7 +643,7 @@ class DPlayer {
 
     initHlsjs(video) {
         if (window.Hls.isSupported()) {
-            const options = this.options.pluginOptions.hls || {};
+            let options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig;
             // p2pConfig.logLevel = true
             if (this.options && this.options.live === true) {
@@ -656,6 +656,14 @@ class DPlayer {
             delete options.p2pConfig;
             // options.debug = true;
             // options.enableWorker = false;
+            const liveConfig = {
+                maxBufferSize: 0,
+                maxBufferLength: 10,
+                liveSyncDurationCount: 15,
+            };
+            if (p2pConfig.live) {
+                options = Object.assign(liveConfig, options);
+            }
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
