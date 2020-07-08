@@ -646,13 +646,20 @@ class DPlayer {
             const options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig;
             // p2pConfig.logLevel = true
-            p2pConfig.live = this.options.live;
+            if (this.options && this.options.live === true) {
+                p2pConfig.live = true;
+            }
+
+            if (!p2pConfig.useHttpRange) {
+                p2pConfig.useHttpRange = false;
+            }
             delete options.p2pConfig;
             // options.debug = true;
             // options.enableWorker = false;
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
+                // console.warn(p2pConfig);
                 hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
                 this.p2pInfo.version = hls.p2pEngine.version;
             }

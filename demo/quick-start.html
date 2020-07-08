@@ -11,22 +11,22 @@
 <script src="https://cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>
+<!--<script src="../dist/CBPlayer.min.js"></script>-->
 <script>
     var _peerId = '', _peerNum = 0, _totalP2PDownloaded = 0, _totalP2PUploaded = 0;
     var player = new CBPlayer({
         container: document.getElementById('cbplayer'),
         autoplay: true,
-        // live: true,
+        live: true,
         video: {
-            url: 'http://hefeng.live.tempsource.cjyun.org/videotmp/s10100-hftv.m3u8',
-            // url: 'http://cn1.kankia.com/hls/20191220/596ff11e1db2c3969da01367fc41d3b0/1576776716/index.m3u8',
+            // url: 'example.m3u8',
         },
         pluginOptions: {
             hls: {
                 debug: false,
                 p2pConfig: {
-                    logLevel: true,
-                    live: true,
+                    // logLevel: true,
+                    // live: true,
                     // Other p2pConfig options provided by CDNBye
                     // https://docs.cdnbye.com/#/API
                 }
