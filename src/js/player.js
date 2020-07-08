@@ -664,6 +664,7 @@ class DPlayer {
             if (p2pConfig.live) {
                 options = Object.assign(liveConfig, options);
             }
+            // console.warn(options)
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
