@@ -14,7 +14,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "publish": "npm publish",
-    "git-push": "git add . && git commit -m 'release 0.7.4' && git push"
+    "git-push": "git add . && git commit -m 'release 0.7.5' && git push"
   },
   "files": [
     "dist"
