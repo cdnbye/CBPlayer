@@ -644,7 +644,7 @@ class DPlayer {
     initHlsjs(video) {
         if (window.Hls.isSupported()) {
             let options = this.options.pluginOptions.hls || {};
-            const p2pConfig = options.p2pConfig;
+            const p2pConfig = options.p2pConfig || {};
             // p2pConfig.logLevel = true
             if (this.options && this.options.live === true) {
                 p2pConfig.live = true;

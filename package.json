@@ -1,6 +1,6 @@
 {
   "name": "cbplayer2",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "CDNBye official web player v2",
   "main": "dist/CBPlayer.min.js",
   "scripts": {
