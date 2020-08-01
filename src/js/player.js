@@ -316,8 +316,25 @@ class DPlayer {
      */
     switchVideo(video, danmakuAPI) {
         this.pause();
+
+        // 销毁之前的p2p
+        if (this.plugins.p2pEngine) {
+            // console.warn('destroy this.plugins.p2pEngine')
+            this.plugins.p2pEngine.destroy();
+            this.plugins.p2pEngine = null;
+            if (this.plugins.dash) {
+                // console.warn('this.plugins.dash.attachSource(null)')
+                this.plugins.dash.attachSource(null)
+            }
+        }
+
         this.video.poster = video.pic ? video.pic : '';
         this.video.src = video.url;
+
+        // console.warn('this.video.src ' + video.url);
+        //
+        // console.warn('initMSE');
+
         this.initMSE(this.video, video.type || 'auto');
         if (danmakuAPI) {
             this.template.danmakuLoading.style.display = 'block';
@@ -340,6 +357,7 @@ class DPlayer {
 
     initMSE(video, type) {
         this.type = type;
+        // console.warn(video.src)
         if (this.options.video.customType && this.options.video.customType[type]) {
             if (Object.prototype.toString.call(this.options.video.customType[type]) === '[object Function]') {
                 this.options.video.customType[type](this.video, this);
@@ -361,21 +379,23 @@ class DPlayer {
                 }
             }
 
+            // console.warn(this.type)
+
             // 百度和UC浏览器目前不兼容P2P
             if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
                 && (utils.isP2pNotSupported || !window.Hls.isSupported())) {
                 this.type = 'normal';
-                this.notice("Warn: Plat hls natively");
+                // this.notice("Warn: Play hls natively");
             }
 
             if (this.type === 'dash' && utils.isP2pNotSupported) {
                 this.type = 'normal';
-                this.notice("Warn: Plat dash natively");
+                // this.notice("Warn: Play dash natively");
             }
 
             if (this.type === 'mp4' && utils.isP2pNotSupported) {
                 this.type = 'normal';
-                this.notice("Warn: Plat mp4 natively");
+                // this.notice("Warn: Play mp4 natively");
             }
 
             switch (this.type) {
@@ -416,7 +436,9 @@ class DPlayer {
 
                 // https://github.com/Dash-Industry-Forum/dash.js
                 case 'dash':
+                    // console.warn('case dash')
                     if (window.dashjs) {
+                        // console.warn('this.initDashjs(video)')
                         this.initDashjs(video);
                     } else {
                         this.notice("Error: Can't find dashjs.");
@@ -424,6 +446,7 @@ class DPlayer {
                     break;
 
                 case 'mp4':
+                    // console.warn('case mp4')
                     if (window.P2PEngineMp4) {
                         this.initMp4(video);
                     } else {
@@ -669,7 +692,7 @@ class DPlayer {
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
                 // console.warn(p2pConfig);
-                hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
+                this.plugins.p2pEngine = hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
                 this.p2pInfo.version = hls.p2pEngine.version;
             }
 
@@ -678,7 +701,9 @@ class DPlayer {
             hls.attachMedia(video);
             this.setupP2PListeners(hls.p2pEngine);
             this.events.on('destroy', () => {
-                hls.destroy();
+                this.plugins.p2pEngine.destroy();
+                delete this.plugins.p2pEngine;
+                this.plugins.hls.destroy();
                 delete this.plugins.hls;
             });
         } else {
@@ -687,28 +712,48 @@ class DPlayer {
     }
 
     initDashjs(video) {
+        // console.warn('initDashjs')
         const options = this.options.pluginOptions.dash || {};
         const p2pConfig = options.p2pConfig;
         delete options.p2pConfig;
-        const mediaPlayer = window.dashjs.MediaPlayer().create();
+        let mediaPlayer = this.plugins.dash;
+        if (!mediaPlayer) {
+            // console.warn('create MediaPlayer')
+            mediaPlayer = window.dashjs.MediaPlayer().create();
+            mediaPlayer.initialize(video, video.src, this.options.autoplay);
+            mediaPlayer.updateSettings(options);
+        } else {
+            // console.warn('mediaPlayer.attachSource')
+            mediaPlayer.attachSource(video.src)
+        }
         if (window.P2PEngineDash && window.P2PEngineDash.isSupported()) {
             const engine = new window.P2PEngineDash(mediaPlayer, p2pConfig);
-            mediaPlayer.p2pEngine = engine;
+            this.plugins.p2pEngine = mediaPlayer.p2pEngine = engine;
             this.p2pInfo.version = engine.version;
         }
-        mediaPlayer.initialize(video, video.src, this.options.autoplay);
-        mediaPlayer.updateSettings(options);
+
         this.plugins.dash = mediaPlayer;
         this.events.on('destroy', () => {
-            window.dashjs.MediaPlayer().reset();
+            this.plugins.p2pEngine.destroy();
+            delete this.plugins.p2pEngine;
+            // window.dashjs.MediaPlayer().reset();
+            this.plugins.dash.reset();
             delete this.plugins.dash;
         });
         this.setupP2PListeners(mediaPlayer.p2pEngine);
     }
 
     initMp4(video) {
+        // console.warn('initMp4');
         const options = this.options.pluginOptions.mp4 || {};
         var engine = new P2PEngineMp4(video, options);
+        // console.warn('after new P2PEngineMp4');
+        this.plugins.p2pEngine = engine;
+        this.events.on('destroy', () => {
+            this.plugins.p2pEngine.destroy();
+            delete this.plugins.p2pEngine;
+        });
+        // console.warn('engine.loadSource ' + video.src);
         engine.loadSource(video.src);
         this.p2pInfo.version = P2PEngineMp4.version;
         this.setupP2PListeners(engine);

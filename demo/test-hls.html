@@ -17,7 +17,7 @@
     var dp = new CBPlayer({
         container: document.getElementById('dplayer'),
         autoplay: true,
-        live: true,
+        // live: true,
         video: {
             // url: 'https://pull.asia.uurtc.com/tzuchi/anyrtcej8mzJr0U1ZT_cycb360/playlist.m3u8?wsSecret=07a0b9d8eacfc3400c75e9ffc2303c7d&wsTime=1594177497&keeptime=86400',
             url: 'https://www.nmgxwhz.com:65/20200107/17hTnjxI/index.m3u8',
@@ -26,7 +26,7 @@
             hls: {
                 debug: false,
                 p2pConfig: {
-                    logLevel: false,
+                    logLevel: 'debug',
                     // live: true,
                     // Other p2pConfig options provided by CDNBye
                     // https://docs.cdnbye.com/#/API
@@ -53,4 +53,40 @@
             + 'MB 已分享' + (_totalP2PUploaded/1024).toFixed(2) + 'MB' + ' 连接节点' + _peerNum + '个';
         document.getElementById('stats').innerText = text
     }
+
+    // setTimeout(() => {
+    //     dp.switchVideo({
+    //         url: 'http://v.live.hndt.com/video/20200317/9411f6c1f11b44888294d47d73107641/cloudv-transfer/555555555po0q1sn5556526553738q1r_73ac26e878d047498fa906ef9e913036_0_4.m3u8',
+    //     },)
+    // }, 15000)
+    //
+    // setTimeout(() => {
+    //     dp.switchVideo({
+    //         url: 'https://www.nmgxwhz.com:65/20200107/17hTnjxI/index.m3u8',
+    //     },)
+    // }, 30000)
+
+    // setTimeout(() => {
+    //     dp.destroy();
+    //     new CBPlayer({
+    //         container: document.getElementById('dplayer'),
+    //         autoplay: true,
+    //         // live: true,
+    //         video: {
+    //             // url: 'https://pull.asia.uurtc.com/tzuchi/anyrtcej8mzJr0U1ZT_cycb360/playlist.m3u8?wsSecret=07a0b9d8eacfc3400c75e9ffc2303c7d&wsTime=1594177497&keeptime=86400',
+    //             url: 'http://v.live.hndt.com/video/20200317/9411f6c1f11b44888294d47d73107641/cloudv-transfer/555555555po0q1sn5556526553738q1r_73ac26e878d047498fa906ef9e913036_0_4.m3u8',
+    //         },
+    //         pluginOptions: {
+    //             hls: {
+    //                 debug: false,
+    //                 p2pConfig: {
+    //                     logLevel: 'debug',
+    //                     // live: true,
+    //                     // Other p2pConfig options provided by CDNBye
+    //                     // https://docs.cdnbye.com/#/API
+    //                 }
+    //             }
+    //         },
+    //     });
+    // }, 15000)
 </script>

@@ -10,3 +10,4 @@ wxw
 package-lock.json
 docs/.vuepress/dist
 demo/test.html
+demo/mp4-p2p-engine.js

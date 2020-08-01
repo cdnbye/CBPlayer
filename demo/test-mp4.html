@@ -8,7 +8,8 @@
 </style>
 <div id="dplayer"></div>
 <div id="stats"></div>
-<script src="https://cdn.jsdelivr.net/npm/cdnbye-mp4@latest"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/cdnbye-mp4@latest"></script>-->
+<script src="./mp4-p2p-engine.js"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>-->
 <script src="../dist/CBPlayer.min.js"></script>
 <script>
@@ -16,12 +17,14 @@
     var dp = new CBPlayer({
         container: document.getElementById('dplayer'),
         // live: true,
+        autoplay: true,
         video: {
-            url: 'https://mp4.cdnbye.com/sv/2dbdf890-16bc25ce898/2dbdf890-16bc25ce898.mp4',
+            // url: 'http://huya-w20.huya.com/2027/357649831/1300/e0a4cd303b58bab74f809be7f2d09113.mp4',
+            url: 'https://vod.vinclass.cn/dharma/medicine/002.mp4',
         },
         pluginOptions: {
             mp4: {
-                autoplay: true,
+                // autoplay: true,
                 p2pConfig: {
                     // logLevel: 'debug',
                     // live: true,
@@ -49,4 +52,41 @@
             + 'MB 已分享' + (_totalP2PUploaded/1024).toFixed(2) + 'MB' + ' 连接节点' + _peerNum + '个';
         document.getElementById('stats').innerText = text
     }
+
+    setTimeout(() => {
+
+        dp.switchVideo({
+            url: 'http://huya-w20.huya.com/2027/357649831/1300/e0a4cd303b58bab74f809be7f2d09113.mp4',
+        },)
+
+    }, 10000)
+    //
+    setTimeout(() => {
+
+        dp.switchVideo({
+            url: 'http://huya-w20.huya.com/2027/357649831/1300/e0a4cd303b58bab74f809be7f2d09113.mp4',
+        },)
+
+    }, 20000)
+
+    // setTimeout(() => {
+    //     dp.destroy();
+    //     new CBPlayer({
+    //         container: document.getElementById('dplayer'),
+    //         // live: true,
+    //         video: {
+    //             url: 'http://huya-w20.huya.com/2027/357649831/1300/e0a4cd303b58bab74f809be7f2d09113.mp4',
+    //         },
+    //         pluginOptions: {
+    //             mp4: {
+    //                 autoplay: true,
+    //                 p2pConfig: {
+    //                     logLevel: 'debug',
+    //                     // live: true,
+    //                     // Other p2pConfig options provided by CDNBye
+    //                 }
+    //             }
+    //         },
+    //     });
+    // }, 10000)
 </script>

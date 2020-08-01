@@ -25,7 +25,7 @@
             dash: {
                 debug: false,
                 p2pConfig: {
-                    // logLevel: 'debug',
+                    logLevel: 'debug',
                     // live: true,
                     // Other p2pConfig options provided by CDNBye
                 }
@@ -51,4 +51,44 @@
             + 'MB 已分享' + (_totalP2PUploaded/1024).toFixed(2) + 'MB' + ' 连接节点' + _peerNum + '个';
         document.getElementById('stats').innerText = text
     }
+
+    setTimeout(() => {
+
+        dp.switchVideo({
+            url: 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd',
+        })
+
+    }, 10000)
+
+    setTimeout(() => {
+
+        dp.switchVideo({
+            url: 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd',
+        })
+
+    }, 20000)
+
+    // setTimeout(() => {
+    //     dp.destroy();
+    //     new CBPlayer({
+    //         container: document.getElementById('dplayer'),
+    //         autoplay: true,
+    //         // live: true,
+    //         video: {
+    //             url: 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd',
+    //         },
+    //         pluginOptions: {
+    //             dash: {
+    //                 debug: false,
+    //                 p2pConfig: {
+    //                     logLevel: 'debug',
+    //                     // live: true,
+    //                     // Other p2pConfig options provided by CDNBye
+    //                 }
+    //             }
+    //         },
+    //     });
+    //
+    // }, 20000)
+
 </script>
