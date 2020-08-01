@@ -11,3 +11,6 @@ package-lock.json
 docs/.vuepress/dist
 demo/test.html
 demo/mp4-p2p-engine.js
+demo/test-dash.html
+demo/test-hls.html
+demo/test-mp4.html
