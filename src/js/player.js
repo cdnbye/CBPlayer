@@ -325,6 +325,8 @@ class DPlayer {
             if (this.plugins.dash) {
                 // console.warn('this.plugins.dash.attachSource(null)')
                 this.plugins.dash.attachSource(null)
+            } else if (this.plugins.hls) {
+                this.plugins.hls.destroy();
             }
         }
 
@@ -420,7 +422,7 @@ class DPlayer {
                             this.plugins.flvjs = flvPlayer;
                             flvPlayer.attachMediaElement(video);
                             flvPlayer.load();
-                            this.events.on('destroy', () => {
+                            this.events.once('destroy', () => {
                                 flvPlayer.unload();
                                 flvPlayer.detachMediaElement();
                                 flvPlayer.destroy();
@@ -472,7 +474,7 @@ class DPlayer {
                                     autoplay: this.options.autoplay,
                                 });
                             });
-                            this.events.on('destroy', () => {
+                            this.events.once('destroy', () => {
                                 client.remove(torrentId);
                                 client.destroy();
                                 delete this.plugins.webtorrent;
@@ -668,7 +670,7 @@ class DPlayer {
         if (window.Hls.isSupported()) {
             let options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig || {};
-            // p2pConfig.logLevel = true
+            // p2pConfig.logLevel = 'debug'
             if (this.options && this.options.live === true) {
                 p2pConfig.live = true;
             }
@@ -687,11 +689,11 @@ class DPlayer {
             if (p2pConfig.live) {
                 options = Object.assign(liveConfig, options);
             }
-            // console.warn(options)
+            // console.warn('new window.Hls')
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
-                // console.warn(p2pConfig);
+                // console.warn('new window.P2PEngine');
                 this.plugins.p2pEngine = hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
                 this.p2pInfo.version = hls.p2pEngine.version;
             }
@@ -700,10 +702,11 @@ class DPlayer {
             hls.loadSource(video.src);
             hls.attachMedia(video);
             this.setupP2PListeners(hls.p2pEngine);
-            this.events.on('destroy', () => {
-                this.plugins.p2pEngine.destroy();
+            this.events.once('destroy', () => {
+                // console.warn('player destroy');
+                hls.p2pEngine.destroy();
                 delete this.plugins.p2pEngine;
-                this.plugins.hls.destroy();
+                hls.destroy();
                 delete this.plugins.hls;
             });
         } else {
@@ -733,7 +736,7 @@ class DPlayer {
         }
 
         this.plugins.dash = mediaPlayer;
-        this.events.on('destroy', () => {
+        this.events.once('destroy', () => {
             this.plugins.p2pEngine.destroy();
             delete this.plugins.p2pEngine;
             // window.dashjs.MediaPlayer().reset();
@@ -749,7 +752,7 @@ class DPlayer {
         var engine = new P2PEngineMp4(video, options);
         // console.warn('after new P2PEngineMp4');
         this.plugins.p2pEngine = engine;
-        this.events.on('destroy', () => {
+        this.events.once('destroy', () => {
             this.plugins.p2pEngine.destroy();
             delete this.plugins.p2pEngine;
         });

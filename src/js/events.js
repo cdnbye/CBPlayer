@@ -67,12 +67,27 @@ class Events {
         }
     }
 
+    //为事件注册单次监听器
+    once(name, callback){
+        let wrapFanc = (...args) => {
+            callback.apply(this. args)
+            this.off(name, wrapFanc)
+        }
+        this.on(name, wrapFanc)
+    }
+
     trigger(name, info) {
         if (this.events[name] && this.events[name].length) {
             for (let i = 0; i < this.events[name].length; i++) {
                 this.events[name][i](info);
             }
         }
+    }
+
+    // 停止监听event事件
+    off(name, callback){
+        let callbacks = this.events[name]
+        this.events[name] = callbacks && callbacks.filter(fn => fn !== callback)
     }
 
     type(name) {
