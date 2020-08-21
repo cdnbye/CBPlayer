@@ -96,6 +96,7 @@ class Template {
         // P2P Info
         this.infoP2pVersion = this.container.querySelector('.dplayer-info-panel-item-p2p-version .dplayer-info-panel-item-data');
         this.infoP2pDownloaded = this.container.querySelector('.dplayer-info-panel-item-p2p-downloaded .dplayer-info-panel-item-data');
+        this.infoP2pRatio = this.container.querySelector('.dplayer-info-panel-item-p2p-ratio .dplayer-info-panel-item-data');
         this.infoP2pUploaded = this.container.querySelector('.dplayer-info-panel-item-p2p-uploaded .dplayer-info-panel-item-data');
         this.infoPeers = this.container.querySelector('.dplayer-info-panel-item-peers .dplayer-info-panel-item-data');
         this.infoPeerid = this.container.querySelector('.dplayer-info-panel-item-peerid .dplayer-info-panel-item-data');

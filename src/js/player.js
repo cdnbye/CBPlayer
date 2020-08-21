@@ -145,7 +145,8 @@ class DPlayer {
         // P2P
         this.p2pInfo = {
             version: '',
-            downloaded: 0, // 单位KB
+            httpDownloaded: 0, // 单位KB
+            p2pDownloaded: 0, // 单位KB
             uploaded: 0, // 单位KB
             peerId: '',
             peers: 0,
@@ -690,10 +691,12 @@ class DPlayer {
                 options = Object.assign(liveConfig, options);
             }
             // console.warn('new window.Hls')
+            // console.warn(options);
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
                 // console.warn('new window.P2PEngine');
+
                 this.plugins.p2pEngine = hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
                 this.p2pInfo.version = hls.p2pEngine.version;
             }
@@ -767,7 +770,8 @@ class DPlayer {
         if (engine) {
             engine
                 .on('stats', (stats) => {
-                    this.p2pInfo.downloaded = stats.totalP2PDownloaded;
+                    this.p2pInfo.p2pDownloaded = stats.totalP2PDownloaded;
+                    this.p2pInfo.httpDownloaded = stats.totalHTTPDownloaded;
                     this.p2pInfo.uploaded = stats.totalP2PUploaded;
                     this.events.trigger('stats', stats);
                 })

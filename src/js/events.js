@@ -55,6 +55,7 @@ class Events {
             'stats',
             'peerId',
             'peers',
+            // 'ratio',
         ];
     }
 
