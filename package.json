@@ -1,6 +1,6 @@
 {
   "name": "cbplayer2",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "CDNBye official web player v2",
   "main": "dist/CBPlayer.min.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "publish": "npm publish",
-    "git-push": "git add . && git commit -m 'release 0.8.2' && git push"
+    "git-push": "git add . && git commit -m 'release 0.8.3' && git push"
   },
   "files": [
     "dist"
@@ -81,6 +81,7 @@
   "dependencies": {
     "axios": "0.19.2",
     "balloon-css": "^1.0.3",
-    "promise-polyfill": "8.1.3"
+    "promise-polyfill": "8.1.3",
+    "get-browser-rtc": "^1.0.0"
   }
 }

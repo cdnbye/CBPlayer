@@ -385,20 +385,24 @@ class DPlayer {
             // console.warn(this.type)
 
             // 百度和UC浏览器目前不兼容P2P
-            if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
-                && (utils.isP2pNotSupported || !window.Hls.isSupported())) {
-                this.type = 'normal';
-                // this.notice("Warn: Play hls natively");
-            }
+            // if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
+            //     && (utils.isP2pNotSupported || !window.Hls.isSupported())) {
+            //     this.type = 'normal';
+            //     // this.notice("Warn: Play hls natively");
+            // }
+            //
+            // if (this.type === 'dash' && utils.isP2pNotSupported) {
+            //     this.type = 'normal';
+            //     // this.notice("Warn: Play dash natively");
+            // }
+            //
+            // if (this.type === 'mp4' && utils.isP2pNotSupported) {
+            //     this.type = 'normal';
+            //     // this.notice("Warn: Play mp4 natively");
+            // }
 
-            if (this.type === 'dash' && utils.isP2pNotSupported) {
+            if (!utils.isP2pSupported) {
                 this.type = 'normal';
-                // this.notice("Warn: Play dash natively");
-            }
-
-            if (this.type === 'mp4' && utils.isP2pNotSupported) {
-                this.type = 'normal';
-                // this.notice("Warn: Play mp4 natively");
             }
 
             switch (this.type) {
