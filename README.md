@@ -21,7 +21,7 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 
 **[中文文档](http://dplayer.js.org/#/zh-Hans/)**
 
-## 集成方法
+## 集成方法(Usage)
 
 ```html
 <meta charset="UTF-8">
@@ -33,7 +33,7 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 </style>
 <div id="dplayer"></div>
 <script src="https://cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.13"></script>
 <script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>
 <script>
     var dp = new CBPlayer({
@@ -57,7 +57,7 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 </script>
 ```
 
-## 完整php版调用代码
+## 完整php版调用代码(A complete script for PHP)
 调用方式：http://example.com?url=
 ```php
 <html>
