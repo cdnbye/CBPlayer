@@ -8,39 +8,64 @@
 </style>
 <div id="dplayer"></div>
 <div id="stats"></div>
+<!-- hls -->
 <script src="https://cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<!-- mp4 -->
 <script src="https://cdn.jsdelivr.net/npm/cdnbye-mp4@latest"></script>
-<!--<script src="./mp4-p2p-engine.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>-->
-<script src="../dist/CBPlayer.min.js"></script>
+<!-- dash -->
+<script src="https://cdn.dashjs.org/v3.1.3/dash.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cdnbye-dash@latest"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>
 
 <script>
     var _peerId = '', _peerNum = 0, _totalP2PDownloaded = 0, _totalP2PUploaded = 0;
     var dp = new CBPlayer({
         container: document.getElementById('dplayer'),
+        autoplay: true,
         video: {
             url: 'http://huya-w20.huya.com/2027/357649831/1300/e0a4cd303b58bab74f809be7f2d09113.mp4',
         },
         pluginOptions: {
             mp4: {
-                autoplay: true,
                 p2pConfig: {
                     logLevel: 'debug',
                     // Other p2pConfig options provided by CDNBye
+                }
+            },
+            dash: {
+                p2pConfig: {
+                    logLevel: 'debug',
+                    // live: true,
+                    // Other p2pConfig options provided by CDNBye
+                }
+            },
+            hls: {
+                p2pConfig: {
+                    logLevel: 'debug',
+                    // live: true,
+                    // Other p2pConfig options provided by CDNBye
+                    // https://docs.cdnbye.com/#/API
                 }
             }
         },
     });
 
+    // switch to hls
     setTimeout(() => {
         dp.switchVideo({
-            // url,
             url: 'https://www.nmgxwhz.com:65/20200107/17hTnjxI/index.m3u8',
-            // url: 'http://huya-w20.huya.com/2027/357649831/1300/e0a4cd303b58bab74f809be7f2d09113.mp4',
         },)
-        dp.play()
-    }, 40000)
+    }, 20000);
+
+    // switch to dash
+    setTimeout(() => {
+        dp.switchVideo({
+            url: 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd',
+        },)
+    }, 40000);
+
 
     dp.on('stats', function (stats) {
         _totalP2PDownloaded = stats.totalP2PDownloaded;
@@ -56,8 +81,8 @@
     });
 
     function updateStats() {
-        var text = 'CDNBye P2P正在为您加速' + (_totalP2PDownloaded/1024).toFixed(2)
-            + 'MB 已分享' + (_totalP2PUploaded/1024).toFixed(2) + 'MB' + ' 连接节点' + _peerNum + '个';
+        var text = 'Traffic offload ' + (_totalP2PDownloaded/1024).toFixed(2)
+            + 'MB shared ' + (_totalP2PUploaded/1024).toFixed(2) + 'MB' + ' peers ' + _peerNum;
         document.getElementById('stats').innerText = text
     }
 

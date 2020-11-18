@@ -14,7 +14,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "publish": "npm publish",
-    "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m 'Support shaka player' && git push"
+    "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m 'Update demo' && git push"
   },
   "files": [
     "dist"
