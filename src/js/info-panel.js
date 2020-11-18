@@ -54,6 +54,7 @@ class InfoPanel {
         this.template.infoP2pUploaded.innerHTML = `${(p2pInfo.uploaded / 1024).toFixed(2)}MB`;
         this.template.infoPeerid.innerHTML = `${p2pInfo.peerId}`;
         this.template.infoPeers.innerHTML = `${p2pInfo.peers}`;
+        this.template.infoDecoder.innerHTML = `${p2pInfo.decoder}`;
     }
 
     fps(value) {

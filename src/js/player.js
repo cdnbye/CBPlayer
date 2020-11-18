@@ -150,6 +150,7 @@ class DPlayer {
             uploaded: 0, // 单位KB
             peerId: '',
             peers: 0,
+            decoder: '',    // 解码内核
         };
 
         this.initVideo(this.video, (this.quality && this.quality.type) || this.options.video.type);
@@ -392,9 +393,11 @@ class DPlayer {
                 // https://github.com/video-dev/hls.js
                 case 'hls':
                     if (window.Hls) {
+                        this.p2pInfo.decoder = 'Hls.js';
                         this.initHlsjs(video);
                     }
                     else if (window.shaka) {
+                        this.p2pInfo.decoder = 'Shaka-Player';
                         this.initShaka(video);
                     }
                     else {
@@ -406,6 +409,7 @@ class DPlayer {
                 case 'flv':
                     if (window.flvjs) {
                         if (window.flvjs.isSupported()) {
+                            this.p2pInfo.decoder = 'Flv.js';
                             const options = Object.assign(this.options.pluginOptions.flvjs, {
                                 type: 'flv',
                                 url: video.src,
@@ -433,9 +437,11 @@ class DPlayer {
                     // console.warn('case dash')
                     if (window.dashjs) {
                         // console.warn('this.initDashjs(video)')
+                        this.p2pInfo.decoder = 'Dash.js';
                         this.initDashjs(video);
                     }
                     else if (window.shaka) {
+                        this.p2pInfo.decoder = 'Shaka-Player';
                         this.initShaka(video);
                     }
                     else {
@@ -446,6 +452,7 @@ class DPlayer {
                 case 'mp4':
                     // console.warn('case mp4')
                     if (window.P2PEngineMp4) {
+                        this.p2pInfo.decoder = 'VideoStream';
                         this.initMp4(video);
                     } else {
                         this.notice("Error: Can't find P2PEngineMp4.");

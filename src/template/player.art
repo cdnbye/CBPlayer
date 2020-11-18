@@ -217,6 +217,10 @@
         <span class="dplayer-info-panel-item-title">Player version</span>
         <span class="dplayer-info-panel-item-data"></span>
     </div>
+    <div class="dplayer-info-panel-item dplayer-info-panel-item-decoder">
+        <span class="dplayer-info-panel-item-title">Decoder</span>
+        <span class="dplayer-info-panel-item-data"></span>
+    </div>
     <div class="dplayer-info-panel-item dplayer-info-panel-item-fps">
         <span class="dplayer-info-panel-item-title">Player FPS</span>
         <span class="dplayer-info-panel-item-data"></span>

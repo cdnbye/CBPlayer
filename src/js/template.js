@@ -100,6 +100,7 @@ class Template {
         this.infoP2pUploaded = this.container.querySelector('.dplayer-info-panel-item-p2p-uploaded .dplayer-info-panel-item-data');
         this.infoPeers = this.container.querySelector('.dplayer-info-panel-item-peers .dplayer-info-panel-item-data');
         this.infoPeerid = this.container.querySelector('.dplayer-info-panel-item-peerid .dplayer-info-panel-item-data');
+        this.infoDecoder = this.container.querySelector('.dplayer-info-panel-item-decoder .dplayer-info-panel-item-data');
     }
 }
 
