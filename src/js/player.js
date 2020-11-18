@@ -328,6 +328,8 @@ class DPlayer {
                 this.plugins.dash.attachSource(null)
             } else if (this.plugins.hls) {
                 this.plugins.hls.destroy();
+            } else if (this.plugins.shaka) {
+
             }
         }
 
@@ -382,25 +384,6 @@ class DPlayer {
                 }
             }
 
-            // console.warn(this.type)
-
-            // 百度和UC浏览器目前不兼容P2P
-            // if (this.type === 'hls' && (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL'))
-            //     && (utils.isP2pNotSupported || !window.Hls.isSupported())) {
-            //     this.type = 'normal';
-            //     // this.notice("Warn: Play hls natively");
-            // }
-            //
-            // if (this.type === 'dash' && utils.isP2pNotSupported) {
-            //     this.type = 'normal';
-            //     // this.notice("Warn: Play dash natively");
-            // }
-            //
-            // if (this.type === 'mp4' && utils.isP2pNotSupported) {
-            //     this.type = 'normal';
-            //     // this.notice("Warn: Play mp4 natively");
-            // }
-
             if (!utils.isP2pSupported) {
                 this.type = 'normal';
             }
@@ -410,7 +393,11 @@ class DPlayer {
                 case 'hls':
                     if (window.Hls) {
                         this.initHlsjs(video);
-                    } else {
+                    }
+                    else if (window.shaka) {
+                        this.initShaka(video);
+                    }
+                    else {
                         this.notice("Error: Can't find hls.js.");
                     }
                     break;
@@ -447,8 +434,12 @@ class DPlayer {
                     if (window.dashjs) {
                         // console.warn('this.initDashjs(video)')
                         this.initDashjs(video);
-                    } else {
-                        this.notice("Error: Can't find dashjs.");
+                    }
+                    else if (window.shaka) {
+                        this.initShaka(video);
+                    }
+                    else {
+                        this.notice("Error: Can't find dashjs or shaka-player.");
                     }
                     break;
 
@@ -719,6 +710,32 @@ class DPlayer {
         } else {
             this.notice('Error: hls.js is not supported.');
         }
+    }
+
+    initShaka(video) {
+        const options = this.options.pluginOptions.shaka || {};
+        const p2pConfig = options.p2pConfig;
+        delete options.p2pConfig;
+        const src = video.src;
+        let shakaPlayer = this.plugins.shaka;
+        if (!shakaPlayer) {
+            shakaPlayer = new shaka.Player(video);
+            // console.warn(options)
+            shakaPlayer.configure(options);
+        }
+        shakaPlayer.load(src);
+        this.plugins.shaka = shakaPlayer;
+        if (window.P2PEngineShaka && window.P2PEngineShaka.isSupported()) {
+            const engine = new window.P2PEngineShaka(shakaPlayer, p2pConfig);
+            this.plugins.p2pEngine = engine;
+            this.p2pInfo.version = engine.version;
+            this.setupP2PListeners(engine);
+        }
+        this.events.once('destroy', () => {
+            this.plugins.p2pEngine.destroy();
+            delete this.plugins.p2pEngine;
+            delete this.plugins.shaka;
+        });
     }
 
     initDashjs(video) {
