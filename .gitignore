@@ -21,3 +21,4 @@ demo/test-hls-switch.html
 demo/test-mp4.html
 demo/test-shaka.html
 demo/test-dashjs.html
+dist
