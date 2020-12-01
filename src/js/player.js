@@ -162,7 +162,7 @@ class DPlayer {
         }
 
         // 记忆播放 使用前先判空
-        if (!this.options.live) {
+        if (!this.options.live && this.options.playState) {
             this.playState = new PlayState(this.video, this.options.video.url);
             // console.warn(`this.playState.getLastState() ${this.playState.getLastState()}`)
             const lastTime = this.playState.getLastState();
@@ -661,6 +661,9 @@ class DPlayer {
         }
         this.video.src = '';
         this.container.innerHTML = '';
+        if (this.options.live) {
+            this.container.classList.remove('dplayer-live');    // TODO 验证
+        }
         this.events.trigger('destroy');
     }
 

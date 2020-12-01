@@ -40,6 +40,7 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
         container: document.getElementById('dplayer'),
         autoplay: true,
         // live: true,
+        playState: true,   // 记忆播放
         video: {
             url: 'https://example.m3u8',
         },
@@ -57,44 +58,8 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 </script>
 ```
 
-## 完整php版调用代码(A complete script for PHP)
-调用方式：http://example.com?url=
-```php
-<html>
-<head>
-    <title>dplayer增加记忆+P2P播放</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=11" />
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cbplayer@latest/dist/CBPlayer.min.css" />
-    <style type="text/css">
-        body,html{width:100%;height:100%;background:#000;padding:0;margin:0;overflow-x:hidden;overflow-y:hidden}
-        *{margin:0;border:0;padding:0;text-decoration:none}
-        #video{position:inherit}
-    </style>
-</head>
-<body style="background:#000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" oncontextmenu=window.event.returnValue=false>
-<div id="video"></div>
-<script src="https://cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>
-<script>
-    var url = '<?php echo($_REQUEST['url']);?>';
-    var dp = new CBPlayer({
-        container: document.getElementById('video'),
-        autoplay: true,
-        hotkey: true,  // 移动端全屏时向右划动快进，向左划动快退。
-        video: {
-            url:url,
-            // pic: 'loading_wap.gif',
-        },
-    });
-    dp.on('fullscreen', function () {
-        if (/Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            screen.orientation.lock('landscape');
-        }
-    });
-</script>
-</body>
-</html>
-```
+## 后台管理系统
+在接入P2P插件后，访问`https://www.cdnbye.com/oms`，注册并绑定域名，即可查看该域名的P2P流量、在线人数、用户地理分布等信息。
+
+## Console
+Register your domain in `https://oms.cdnbye.com`, where you can view p2p-related information.
