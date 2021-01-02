@@ -25,7 +25,6 @@ CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 
 ```html
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/p2p-dplayer@latest/dist/DPlayer.min.css">
 <style type="text/css">
     body,html{width:100%;height:100%;background:#000;padding:0;margin:0;overflow-x:hidden;overflow-y:hidden}
     *{margin:0;border:0;padding:0;text-decoration:none}

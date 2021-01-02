@@ -21,9 +21,6 @@ import ContextMenu from './contextmenu';
 import InfoPanel from './info-panel';
 import tplVideo from '../template/video.art';
 import PlayState from './play-state';
-// import Hls from 'cdnbye';
-// import P2PEngine from 'cdnbye/dist/hlsjs-p2p-engine.min';
-// import Hls from 'hls.js';
 
 let index = 0;
 const instances = [];
@@ -723,6 +720,7 @@ class DPlayer {
     }
 
     initShaka(video) {
+        shaka.polyfill.installAll();
         const options = this.options.pluginOptions.shaka || {};
         const p2pConfig = options.p2pConfig;
         delete options.p2pConfig;
