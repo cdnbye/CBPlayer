@@ -45,6 +45,16 @@ class InfoPanel {
             this.template.infoDanmakuApi.innerHTML = this.player.options.danmaku.api;
             this.template.infoDanmakuAmount.innerHTML = this.player.danmaku.dan.length;
         }
+        // P2P Info
+        const p2pInfo = this.player.p2pInfo;
+        // console.warn(`${p2pInfo.p2pDownloaded} ${p2pInfo.httpDownloaded}`)
+        this.template.infoP2pVersion.innerHTML = `v${p2pInfo.version}`;
+        this.template.infoP2pDownloaded.innerHTML = `${(p2pInfo.p2pDownloaded / 1024).toFixed(2)}MB`;
+        this.template.infoP2pRatio.innerHTML = `${Math.round(p2pInfo.p2pDownloaded / (p2pInfo.p2pDownloaded + p2pInfo.httpDownloaded) * 100).toFixed(0)}%`;
+        this.template.infoP2pUploaded.innerHTML = `${(p2pInfo.uploaded / 1024).toFixed(2)}MB`;
+        this.template.infoPeerid.innerHTML = `${p2pInfo.peerId}`;
+        this.template.infoPeers.innerHTML = `${p2pInfo.peers}`;
+        this.template.infoDecoder.innerHTML = `${p2pInfo.decoder}`;
     }
 
     fps(value) {

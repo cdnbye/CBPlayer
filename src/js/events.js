@@ -52,6 +52,9 @@ class Events {
             'subtitle_show',
             'subtitle_hide',
             'subtitle_change',
+            'stats',
+            'peerId',
+            'peers',
         ];
     }
 
@@ -62,6 +65,21 @@ class Events {
             }
             this.events[name].push(callback);
         }
+    }
+
+    // 为事件注册单次监听器
+    once(name, callback) {
+        const wrapFanc = (...args) => {
+            callback.apply(this. args);
+            this.off(name, wrapFanc);
+        };
+        this.on(name, wrapFanc);
+    }
+
+    // 停止监听event事件
+    off(name, callback) {
+        const callbacks = this.events[name];
+        this.events[name] = callbacks && callbacks.filter((fn) => fn !== callback);
     }
 
     trigger(name, info) {

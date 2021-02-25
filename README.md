@@ -1,148 +1,64 @@
 <p align="center">
-<img src="https://i.imgur.com/LnPvZvO.png" alt="ADPlayer" width="100">
+<img src="https://cdnbye.oss-cn-beijing.aliyuncs.com/pic/cdnbye.png" alt="CBPlayer" width="100">
 </p>
-<h1 align="center">DPlayer</h1>
+<h1 align="center">CBPlayer2</h1>
 
 > 🍭 Wow, such a lovely HTML5 danmaku video player
 
-[![npm](https://img.shields.io/npm/v/dplayer.svg?style=flat-square)](https://www.npmjs.com/package/dplayer)
-[![npm](https://img.shields.io/npm/l/dplayer.svg?style=flat-square)](https://github.com/MoePlayer/DPlayer/blob/master/LICENSE)
-[![npm](https://img.shields.io/npm/dt/dplayer.svg?style=flat-square)](https://www.npmjs.com/package/dplayer)
-[![size](https://badge-size.herokuapp.com/MoePlayer/DPlayer/master/dist/DPlayer.min.js?compression=gzip&style=flat-square)](https://github.com/MoePlayer/DPlayer/tree/master/dist)
-[![Travis](https://img.shields.io/travis/MoePlayer/DPlayer.svg?style=flat-square)](https://travis-ci.org/MoePlayer/DPlayer)
-[![devDependency Status](https://img.shields.io/david/dev/MoePlayer/dplayer.svg?style=flat-square)](https://david-dm.org/MoePlayer/DPlayer#info=devDependencies)
+[![npm](https://img.shields.io/npm/v/cbplayer2.svg?style=flat-square)](https://www.npmjs.com/package/cbplayer2)
+[![npm](https://img.shields.io/npm/l/cbplayer2.svg?style=flat-square)](https://github.com/MoePlayer/DPlayer/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/dt/cbplayer2.svg?style=flat-square)](https://www.npmjs.com/package/cbplayer2)
+[![npm](https://data.jsdelivr.com/v1/package/npm/cbplayer2/badge)](https://www.jsdelivr.com/package/npm/cbplayer2)
 
 ## Introduction
 
-![image](http://i.imgur.com/207ch36.jpg)
+CBPlayer 是基于 DPlayer 开发的，内置 CDNBye P2P 插件的 H5 播放器，加入了记忆播放等实用功能，右键可以查看p2p实时数据。支持HLS、MP4和MPEG-DASH三种格式的P2P加速。
 
-DPlayer is a lovely HTML5 danmaku video player to help people build video and danmaku easily.
-
-**DPlayer supports:**
-
--   Streaming formats
-    -   [HLS](https://github.com/video-dev/hls.js)
-    -   [FLV](https://github.com/Bilibili/flv.js)
-    -   [MPEG DASH](https://github.com/Dash-Industry-Forum/dash.js)
-    -   [WebTorrent](https://github.com/webtorrent/webtorrent)
-    -   Any other custom streaming formats
--   Media formats
-    -   MP4 H.264
-    -   WebM
-    -   Ogg Theora Vorbis
--   Features
-    -   Danmaku
-    -   Screenshot
-    -   Hotkeys
-    -   Quality switching
-    -   Thumbnails
-    -   Subtitle
-
-Using DPlayer on your project? [Let me know!](https://github.com/DIYgod/DPlayer/issues/31)
+<br>
+CBPlayer的API与DPlayer保持一致，可以参考DPLayer的官方文档：
 
 **[Docs](http://dplayer.js.org)**
 
 **[中文文档](http://dplayer.js.org/#/zh-Hans/)**
 
-## Thanks
+## 集成方法(Usage)
 
-### Special Sponsors
+```html
+<meta charset="UTF-8">
+<style type="text/css">
+    body,html{width:100%;height:100%;background:#000;padding:0;margin:0;overflow-x:hidden;overflow-y:hidden}
+    *{margin:0;border:0;padding:0;text-decoration:none}
+    #dplayer{position:inherit}
+</style>
+<div id="dplayer"></div>
+<script src="https://cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.13"></script>
+<script src="https://cdn.jsdelivr.net/npm/cbplayer2@latest"></script>
+<script>
+    var dp = new CBPlayer({
+        container: document.getElementById('dplayer'),
+        autoplay: true,
+        // live: true,
+        playState: true,   // 记忆播放
+        video: {
+            url: 'https://example.m3u8',
+        },
+        pluginOptions: {
+            hls: {
+                debug: false,
+                p2pConfig: {
+                    logLevel: false,
+                    // live: true,
+                    // Other p2pConfig options provided by CDNBye
+                }
+            }
+        },
+    });
+</script>
+```
 
-<div>
-<a href="https://www.cdnbye.com" target="_blank">
-    <img height="60px" src="https://cdnbye.oss-cn-beijing.aliyuncs.com/pic/cdnbye-dp.jpeg">
-</a>
-</div>
+## 后台管理系统
+在接入P2P插件后，访问`https://www.cdnbye.com/oms`，注册并绑定域名，即可查看该域名的P2P流量、在线人数、用户地理分布等信息。
 
-<div>
-<a href="https://www.dogecloud.com/?ref=dplayer" target="_blank">
-    <img height="60px" src="https://i.imgur.com/C2NgugY.png">
-</a>
-</div>
-
-### Sponsors
-
-| [极酷社](https://www.acg.app) |
-| :---------------------------: |
-
-### Contributors
-
-<a href="https://github.com/MoePlayer/DPlayer/graphs/contributors"><img src="https://opencollective.com/DPlayer/contributors.svg?width=890" /></a>
-
-## Join the Discussion
-
--   [Telegram Group](https://t.me/adplayer)
-
-## Related Projects
-
-Feel free to submit yours in [`Let me know!`](https://github.com/MoePlayer/DPlayer/issues/31)
-
-### Tooling
-
--   [DPlayer-thumbnails](https://github.com/MoePlayer/DPlayer-thumbnails): generate video thumbnails
-
-### Danmaku api
-
--   [DPlayer-node](https://github.com/MoePlayer/DPlayer-node): Node.js
--   [laravel-danmaku](https://github.com/MoePlayer/laravel-danmaku): PHP
--   [dplayer-live-backend](https://github.com/Izumi-kun/dplayer-live-backend): Node.js, WebSocket live backend
--   [RailsGun](https://github.com/MoePlayer/RailsGun): Ruby
-
-### Plugins
-
--   [DPlayer-for-typecho](https://github.com/volio/DPlayer-for-typecho): Typecho
--   [Hexo-tag-dplayer](https://github.com/NextMoe/hexo-tag-dplayer): Hexo
--   [DPlayer_for_Z-BlogPHP](https://github.com/fghrsh/DPlayer_for_Z-BlogPHP): Z-BlogPHP
--   [DPlayer for Discuz!](https://coding.net/u/Click_04/p/video/git): Discuz!
--   [DPlayer for WordPress](https://github.com/BlueCocoa/DPlayer-WordPress): WordPress
--   [DPlayerHandle](https://github.com/kn007/DPlayerHandle): WordPress
--   [Selection](https://github.com/GreatSatan79/Selection): WordPress
--   [Vue-DPlayer](https://github.com/sinchang/vue-dplayer): Vue
--   [react-dplayer](https://github.com/hnsylitao/react-dplayer): React
-
-### Other
-
--   [DPlayer-Lite](https://github.com/kn007/DPlayer-Lite): lite version
--   [hlsjs-p2p-engine](https://github.com/cdnbye/hlsjs-p2p-engine): Let your viewers become your unlimitedly scalable CDN
--   [CBPlayer](https://github.com/cdnbye/CBPlayer): Dplayer with CDNBye P2P plugin built in, supporting HLS, MP4 and MPEG-DASH P2P streaming.
--   Feel free to submit yours in [`Let me know!`](https://github.com/MoePlayer/DPlayer/issues/31)
-
-## Who use DPlayer?
-
--   [学习强国](https://itunes.apple.com/cn/app/%E5%AD%A6%E4%B9%A0%E5%BC%BA%E5%9B%BD/id1426355645?mt=8): “学习强国”学习平台精心打造的手机客户端
--   [小红书](https://www.xiaohongshu.com/): 中国最大的生活社区分享平台，同时也是发现全球好物的电商平台
--   [极客时间](https://time.geekbang.org/): 极客邦科技出品的一款 IT 内容知识服务 App
--   [嘀哩嘀哩](http://www.dilidili.wang/): 兴趣使然的无名小站（D 站）
--   [银色子弹](https://www.sbsub.com/): 银色子弹，简称银弹，由多数柯南热爱者聚集在一起的组织
--   [浙江大学 CC98 论坛](https://zh.wikipedia.org/wiki/CC98%E8%AE%BA%E5%9D%9B): 浙江大学校网内规模最大的论坛，中国各大学中较活跃的 BBS 之一
--   [纸飞机南航青年网络社区](http://my.nuaa.edu.cn/video-video.html): 南京航空航天大学门户网站
--   [otomads](https://otomads.com/): 专注于音 MAD 的视频弹幕网站
--   [Cloudreve](https://github.com/HFO4/Cloudreve): 基于 ThinkPHP 构建的网盘系统
--   [oneindex](https://github.com/donwa/oneindex): Onedrive Directory Index
--   Feel free to submit yours in [`Let me know!`](https://github.com/MoePlayer/DPlayer/issues/31)
-
-## Donate
-
-DPlayer is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing.
-
-## One-time Donations
-
-We accept donations through these channels:
-
--   [Paypal](https://www.paypal.me/DIYgod)
--   [WeChat Pay](https://i.imgur.com/aq6PtWa.png)
--   [Alipay](https://i.imgur.com/wv1Pj2k.png)
-
-## Recurring Pledges
-
-Recurring pledges come with exclusive perks, e.g. enabling faster GitHub response, having your name or your company logo listed in the DPlayer GitHub repository and this website.
-
--   Become a backer or sponsor via [Patreon](https://www.patreon.com/DIYgod)
--   E-mail us: i#html.love
-
-## Author
-
-**DPlayer** © [DIYgod](https://github.com/DIYgod), Released under the [MIT](./LICENSE) License.<br>
-Authored and maintained by DIYgod with help from contributors ([list](https://github.com/DIYgod/DPlayer/contributors)).
-
-> [Blog](https://diygod.me) · GitHub [@DIYgod](https://github.com/DIYgod) · Twitter [@DIYgod](https://twitter.com/DIYgod) · Telegram Channel [@awesomeDIYgod](https://t.me/awesomeDIYgod)
+## Console
+Register your domain in `https://oms.cdnbye.com`, where you can view p2p-related information.

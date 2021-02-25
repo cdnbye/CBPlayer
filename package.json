@@ -1,27 +1,34 @@
 {
-    "name": "dplayer",
-    "version": "1.26.0",
-    "description": "Wow, such a lovely HTML5 danmaku video player",
-    "main": "dist/DPlayer.min.js",
+    "name": "cbplayer2",
+    "version": "0.10.0",
+    "description": "CDNBye official web player v2",
+    "main": "dist/CBPlayer.min.js",
     "scripts": {
         "start": "npm run dev",
-        "build": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js --progress --display-error-details --colors",
+        "build": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js --progress",
         "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack/dev.config.js --watch --colors",
         "test": "eslint src webpack",
         "format": "eslint \"**/*.js\" --fix && prettier \"**/*.{js,json,md}\" --write",
         "format:staged": "eslint \"**/*.js\" --fix && pretty-quick --staged --verbose --pattern \"**/*.{js,json,md}\"",
         "format:check": "eslint \"**/*.js\" && prettier-check \"**/*.{js,json,md}\"",
         "docs:dev": "vuepress dev docs",
-        "docs:build": "vuepress build docs"
+        "docs:build": "vuepress build docs",
+        "publish": "npm publish",
+        "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m 'remove dplayer.min.css' && git push"
     },
     "files": [
         "dist"
     ],
     "repository": {
-        "url": "git+https://github.com/DIYgod/DPlayer.git",
+        "url": "git+https://github.com/cdnbye/CBPlayer.git",
         "type": "git"
     },
     "keywords": [
+        "p2p",
+        "webrtc",
+        "cdnbye",
+        "m3u8",
+        "hls",
         "player",
         "danmaku",
         "video",
@@ -30,12 +37,12 @@
     "gitHooks": {
         "pre-commit": "npm run format:staged"
     },
-    "author": "DIYgod",
+    "author": "cdnbye",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/DIYgod/DPlayer/issues"
+        "url": "https://github.com/cdnbye/CBPlayer/issues"
     },
-    "homepage": "https://github.com/DIYgod/DPlayer#readme",
+    "homepage": "https://www.cdnbye.com",
     "devDependencies": {
         "@babel/core": "^7.6.0",
         "@babel/preset-env": "^7.4.5",
@@ -77,6 +84,7 @@
     "dependencies": {
         "axios": "0.21.0",
         "balloon-css": "^1.0.3",
-        "promise-polyfill": "8.2.0"
+        "promise-polyfill": "8.2.0",
+        "get-browser-rtc": "^1.0.0"
     }
 }

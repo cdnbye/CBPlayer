@@ -98,7 +98,7 @@ const tranTxt = {
         'Hide subtitle': '隱藏字幕',
         Volume: '音量',
         Live: '直播',
-        'Video info': '影片統計訊息',
+        'Video info': '影片&P2P統計訊息',
     },
 };
 

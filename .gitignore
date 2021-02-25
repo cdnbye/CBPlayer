@@ -8,3 +8,15 @@ wxw
 .vscode
 package-lock.json
 docs/.vuepress/dist
+demo/test.html
+demo/mp4-p2p-engine.js
+demo/hls.js
+demo/hlsjs-p2p-engine.js
+demo/shaka-p2p-engine.js
+demo/dashjs-p2p-engine.js
+demo/test-dash.html
+demo/test-hls.html
+demo/test-hls-switch.html
+demo/test-mp4.html
+demo/test-shaka.html
+demo/test-dashjs.html

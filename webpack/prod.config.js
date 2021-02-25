@@ -10,10 +10,10 @@ module.exports = {
 
     bail: true,
 
-    devtool: 'source-map',
+    // devtool: 'source-map',
 
     entry: {
-        DPlayer: './src/js/index.js',
+        CBPlayer: './src/js/index.js',
     },
 
     output: {

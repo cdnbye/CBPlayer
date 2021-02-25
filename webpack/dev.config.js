@@ -8,10 +8,10 @@ const cssnano = require('cssnano');
 module.exports = {
     mode: 'development',
 
-    devtool: 'cheap-module-source-map',
+    // devtool: 'cheap-module-source-map',
 
     entry: {
-        DPlayer: './src/js/index.js',
+        CBPlayer: './src/js/index.js',
     },
 
     output: {

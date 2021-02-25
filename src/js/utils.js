@@ -1,4 +1,7 @@
+import  getBrowserRTC from 'get-browser-rtc';
+
 const isMobile = /mobile/i.test(window.navigator.userAgent);
+const isP2pSupported = isMSESupported() && isWebRTCSupported();
 
 const utils = {
     /**
@@ -89,6 +92,8 @@ const utils = {
 
     isMobile: isMobile,
 
+    isP2pSupported: isP2pSupported,
+
     isFirefox: /firefox/i.test(window.navigator.userAgent),
 
     isChrome: /chrome/i.test(window.navigator.userAgent),
@@ -132,5 +137,32 @@ const utils = {
         }
     },
 };
+
+function getMediaSource () {
+    if (typeof window !== 'undefined') {
+        return window.MediaSource || window.WebKitMediaSource;
+    }
+}
+
+function isMSESupported () {
+    const mediaSource = getMediaSource();
+    const sourceBuffer = window.SourceBuffer || window.WebKitSourceBuffer;
+    const isTypeSupported = mediaSource &&
+        typeof mediaSource.isTypeSupported === 'function' &&
+        mediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E,mp4a.40.2"');
+
+    // if SourceBuffer is exposed ensure its API is valid
+    // safari and old version of Chrome doe not expose SourceBuffer globally so checking SourceBuffer.prototype is impossible
+    const sourceBufferValidAPI = !sourceBuffer ||
+        (sourceBuffer.prototype &&
+            typeof sourceBuffer.prototype.appendBuffer === 'function' &&
+            typeof sourceBuffer.prototype.remove === 'function');
+    return !!isTypeSupported && !!sourceBufferValidAPI;
+}
+
+function isWebRTCSupported() {
+    const browserRTC = getBrowserRTC();
+    return (browserRTC && (browserRTC.RTCPeerConnection.prototype.createDataChannel !== undefined));
+}
 
 export default utils;
