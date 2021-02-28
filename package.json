@@ -14,7 +14,7 @@
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
         "publish": "npm publish",
-        "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m 'remove dplayer.min.css' && git push"
+        "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m 'release v0.10.0' && git push"
     },
     "files": [
         "dist"
@@ -35,7 +35,6 @@
         "html5"
     ],
     "gitHooks": {
-        "pre-commit": "npm run format:staged"
     },
     "author": "cdnbye",
     "license": "MIT",
