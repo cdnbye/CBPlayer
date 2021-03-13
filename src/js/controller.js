@@ -7,7 +7,8 @@ class Controller {
         this.player = player;
 
         this.autoHideTimer = 0;
-        if (!utils.isMobile) {
+        // if (!utils.isMobile) {
+        if (true) {
             this.player.container.addEventListener('mousemove', () => {
                 this.setAutoHide();
             });
