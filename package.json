@@ -1,6 +1,6 @@
 {
     "name": "cbplayer2",
-    "version": "0.10.1",
+    "version": "0.10.2",
     "description": "CDNBye official web player v2",
     "main": "dist/CBPlayer.min.js",
     "scripts": {
@@ -14,7 +14,7 @@
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
         "publish": "npm publish",
-        "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m '移动设备暂停符号自动消失' && git push"
+        "git-push": "git add demo && git add package.json && git add README.md && git add src && git commit -m '修复QQ浏览器不能播放的bug' && git push"
     },
     "files": [
         "dist"

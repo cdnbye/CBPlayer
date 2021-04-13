@@ -1,4 +1,3 @@
-import  getBrowserRTC from 'get-browser-rtc';
 
 const isMobile = /mobile/i.test(window.navigator.userAgent);
 const isP2pSupported = isMSESupported() && isWebRTCSupported();
@@ -163,6 +162,20 @@ function isMSESupported () {
 function isWebRTCSupported() {
     const browserRTC = getBrowserRTC();
     return (browserRTC && (browserRTC.RTCPeerConnection.prototype.createDataChannel !== undefined));
+}
+
+function getBrowserRTC () {
+    if (typeof window === 'undefined') return null
+    var wrtc = {
+        RTCPeerConnection: window.RTCPeerConnection || window.mozRTCPeerConnection ||
+            window.webkitRTCPeerConnection,
+        RTCSessionDescription: window.RTCSessionDescription ||
+            window.mozRTCSessionDescription || window.webkitRTCSessionDescription,
+        RTCIceCandidate: window.RTCIceCandidate || window.mozRTCIceCandidate ||
+            window.webkitRTCIceCandidate
+    }
+    if (!wrtc.RTCPeerConnection) return null
+    return wrtc
 }
 
 export default utils;
