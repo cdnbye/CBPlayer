@@ -675,7 +675,9 @@ class DPlayer {
             let options = this.options.pluginOptions.hls || {};
             const p2pConfig = options.p2pConfig || {};
             // p2pConfig.logLevel = 'debug'
-            if (this.options && this.options.live === true) {
+            if (this.options && this.options.live !== true) {
+                p2pConfig.live = false;
+            } else {
                 p2pConfig.live = true;
             }
 
