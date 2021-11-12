@@ -24,6 +24,7 @@ import PlayState from './play-state';
 
 let index = 0;
 const instances = [];
+window.disableP2pEngineIOSAutoInit = true;
 
 class DPlayer {
     /**
@@ -174,6 +175,9 @@ class DPlayer {
 
         index++;
         instances.push(this);
+
+        // ios web p2p
+        this.initIOSWeb();
     }
 
     /**
@@ -329,14 +333,14 @@ class DPlayer {
             // console.warn('destroy this.plugins.p2pEngine')
             this.plugins.p2pEngine.destroy();
             this.plugins.p2pEngine = null;
-            if (this.plugins.dash) {
-                // console.warn('this.plugins.dash.attachSource(null)')
-                this.plugins.dash.attachSource(null);
-            } else if (this.plugins.hls) {
-                this.plugins.hls.destroy();
-            } else if (this.plugins.shaka) {
+        }
+        if (this.plugins.dash) {
+            // console.warn('this.plugins.dash.attachSource(null)')
+            this.plugins.dash.attachSource(null);
+        } else if (this.plugins.hls) {
+            this.plugins.hls.destroy();
+        } else if (this.plugins.shaka) {
 
-            }
         }
 
         this.video.poster = video.pic ? video.pic : '';
@@ -668,6 +672,21 @@ class DPlayer {
     static get version() {
         /* global DPLAYER_VERSION */
         return DPLAYER_VERSION;
+    }
+
+    initIOSWeb() {
+        if (window.P2PEngineIOS && window.P2PEngineIOS.isSupported()) {
+            const options = this.options.pluginOptions.ios || {};
+            var engine = new P2PEngineIOS(options)
+            engine.registerServiceWorker().then((registration) => {
+                // console.info('ServiceWorker registration successful with scope: ', registration.scope);
+                if (!window.Hls) this.p2pInfo.decoder = 'Native';
+            }).catch((err) => {
+                // console.info('ServiceWorker registration failed ', err)
+            })
+            this.p2pInfo.version = P2PEngineIOS.version;
+            this.setupP2PListeners(engine);
+        }
     }
 
     initHlsjs(video) {
