@@ -21,4 +21,5 @@ demo/test-mp4.html
 demo/test-shaka.html
 demo/test-dashjs.html
 demo/test-all.html
+demo/test-hlsde.html
 dist
