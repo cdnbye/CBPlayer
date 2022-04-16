@@ -677,15 +677,32 @@ class DPlayer {
     initIOSWeb() {
         if (window.P2PEngineIOS && window.P2PEngineIOS.isSupported()) {
             const options = this.options.pluginOptions.ios || {};
-            var engine = new P2PEngineIOS(options)
+            // eslint-disable-next-line no-undef
+            const engine = new P2PEngineIOS(options)
             engine.registerServiceWorker().then((registration) => {
                 // console.info('ServiceWorker registration successful with scope: ', registration.scope);
                 if (!window.Hls) this.p2pInfo.decoder = 'Native';
-            }).catch((err) => {
+            }).catch(() => {
                 // console.info('ServiceWorker registration failed ', err)
             })
-            this.p2pInfo.version = P2PEngineIOS.version;
+            // eslint-disable-next-line no-undef
+            if (!options.nativePlaybackOnly || (options.nativePlaybackOnly && !P2PEngineIOS.isMSESupported())) this.p2pInfo.version = P2PEngineIOS.version;
             this.setupP2PListeners(engine);
+            this.events.on('destroy', () => {
+                // console.warn('player destroy');
+                engine.destroy();
+            });
+        } else if (window.Hls && window.Hls.P2pEngine && !window.Hls.isSupported()) {
+            this.p2pInfo.decoder = 'Native';
+            this.p2pInfo.version = window.Hls.engineVersion;
+            let options = this.options.pluginOptions.hls || {};
+            const p2pConfig = options.p2pConfig || {};
+            const engine = new window.Hls.P2pEngine(p2pConfig);
+            this.setupP2PListeners(engine);
+            this.events.on('destroy', () => {
+                // console.warn('player destroy');
+                engine.destroy();
+            });
         }
     }
 
@@ -703,7 +720,7 @@ class DPlayer {
             if (!p2pConfig.useHttpRange) {
                 p2pConfig.useHttpRange = false;
             }
-            delete options.p2pConfig;
+            // delete options.p2pConfig;
             // options.debug = true;
             // options.enableWorker = false;
             const liveConfig = {
@@ -719,19 +736,21 @@ class DPlayer {
             const hls = new window.Hls(options);
 
             if (window.P2PEngine && window.P2PEngine.isSupported()) {
-                // console.warn('new window.P2PEngine');
-
+                // p2p v1
                 this.plugins.p2pEngine = hls.p2pEngine = new window.P2PEngine(hls, p2pConfig);
                 this.p2pInfo.version = hls.p2pEngine.version;
+            } else if ( window.Hls.P2pEngine) {
+                // p2p v2
+                this.p2pInfo.version = window.Hls.engineVersion;
             }
 
             this.plugins.hls = hls;
             hls.loadSource(video.src);
             hls.attachMedia(video);
             this.setupP2PListeners(hls.p2pEngine);
-            this.events.once('destroy', () => {
-                // console.warn('player destroy');
-                hls.p2pEngine.destroy();
+            this.events.on('destroy', () => {
+                // console.warn('hls destroy');
+                if (hls.p2pEngine) hls.p2pEngine.destroy();
                 delete this.plugins.p2pEngine;
                 hls.destroy();
                 delete this.plugins.hls;
@@ -742,6 +761,7 @@ class DPlayer {
     }
 
     initShaka(video) {
+        // eslint-disable-next-line no-undef
         shaka.polyfill.installAll();
         const options = this.options.pluginOptions.shaka || {};
         const p2pConfig = options.p2pConfig;
@@ -749,6 +769,7 @@ class DPlayer {
         const src = video.src;
         let shakaPlayer = this.plugins.shaka;
         if (!shakaPlayer) {
+            // eslint-disable-next-line no-undef
             shakaPlayer = new shaka.Player(video);
             // console.warn(options)
             shakaPlayer.configure(options);
@@ -803,6 +824,7 @@ class DPlayer {
     initMp4(video) {
         // console.warn('initMp4');
         const options = this.options.pluginOptions.mp4 || {};
+        // eslint-disable-next-line no-undef
         const engine = new P2PEngineMp4(video, options);
         // console.warn('after new P2PEngineMp4');
         this.plugins.p2pEngine = engine;
@@ -812,6 +834,7 @@ class DPlayer {
         });
         // console.warn('engine.loadSource ' + video.src);
         engine.loadSource(video.src);
+        // eslint-disable-next-line no-undef
         this.p2pInfo.version = P2PEngineMp4.version;
         this.setupP2PListeners(engine);
     }
